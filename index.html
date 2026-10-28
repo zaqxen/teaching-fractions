@@ -225,6 +225,10 @@
 #cutlab .lab-piece.pop{animation:labBlockPop .32s ease-out}
 @keyframes labBlockPop{0%{transform:translateY(-6px) scale(.97);filter:brightness(1.18)}100%{transform:translateY(0) scale(1);filter:brightness(1)}}
 #cutlab .lab-piece .lab-fraction{position:relative;z-index:1}
+.lab-piece .lab-piece-partitions{position:absolute;inset:2px;display:grid;grid-template-columns:repeat(var(--visual-parts,1),minmax(0,1fr));pointer-events:none;z-index:0;opacity:.9;overflow:hidden;border-radius:4px 4px 1px 1px}
+.lab-piece .lab-piece-partitions span{border-right:2px solid #ffffff80;box-shadow:inset -1px 0 0 #0c2a4530;background:linear-gradient(180deg,#ffffff1c 0%,#ffffff05 48%,#00000014 100%)}
+.lab-piece .lab-piece-partitions span:last-child{border-right:0}
+.lab-piece .lab-fraction,.lab-piece .lab-join-indicator,.lab-piece .lab-remove-corner,.lab-piece .lab-sum-continuation{position:relative;z-index:2}
 .lab-ghost{background:linear-gradient(#ffffff4d,#0000001f),var(--piece-color);box-shadow:0 5px 0 color-mix(in srgb,var(--piece-color) 45%,#183047),0 11px 16px #122a4852;border:2px solid #ffffffc0}
 
 
@@ -370,6 +374,7 @@ body.lab-arrow-drawing{cursor:crosshair}
   #cutlab .lab-sum-index{font-size:10px}
   #cutlab .lab-sum-row{min-height:42px}
   #cutlab .lab-sum-fragment .lab-fraction{font-size:clamp(9px,2.6vw,13px)}
+  .lab-piece .lab-piece-partitions span{border-right-width:1px}
   .lab-dialog{width:calc(100vw - 18px);max-height:calc(100dvh - 18px);padding:14px;border-radius:14px}
   .lab-dialog-head h3{font-size:19px;line-height:1.3}
   .lab-dialog-actions button{min-height:44px}
@@ -594,10 +599,11 @@ const labFind=id=>{for(const z of labAreas){const i=labState[z].findIndex(p=>p.i
 function labSnapshot(){labHistory.push(JSON.stringify({s:labState,n:labNextId,m:labMilestones,e:labBoardEntry}));if(labHistory.length>100)labHistory.shift()}
 function labUndo(){const prev=labHistory.pop();if(!prev){labFeedback('Nothing to undo yet.');return}const obj=JSON.parse(prev);labState=obj.s;labNextId=obj.n;labMilestones=obj.m;labBoardEntry=obj.e??null;labSelected=null;labFresh=[];labCloseMenu();labRender();labFeedback('Last action undone.')}
 function labFeedback(msg){$('labFeedback').textContent=msg}
+function labPartitionHTML(count){const parts=Math.max(1,Math.min(32,Number(count)||1));return `<span class="lab-piece-partitions" style="--visual-parts:${parts}" aria-hidden="true">${'<span></span>'.repeat(parts)}</span>`}
 function labPieceHTML(p,scale=1,z='work',original=null){const [col,ink]=labColor(p.d),fresh=labFresh.includes(p.id);
 const deletable=z!=='work',canShowRemove=deletable&&p.n/p.d/scale>=.085;
 const fragmentNote=original&&labLabel(original)!==labLabel(p)?` (part of ${labLabel(original)}; moving it moves the entire block)`:'';
-return `<button type="button" class="lab-piece ${z==='work'&&p.emphasis===true&&Date.now()<(p.glowUntil||0)?'emphasized':z==='work'&&p.emphasis===false?'remainder':''} ${fresh?'pop':''}" style="--piece-width:${100*p.n/p.d/scale}%;--piece-color:${col};--piece-ink:${ink}" data-lab-id="${p.id}" data-d="${p.d}" aria-label="${labLabel(p)}${fragmentNote}. Drag to move; right-click or touch and hold for options; double-click or double-tap to simplify." title="${labLabel(p)}${fragmentNote} — right-click or touch and hold for options"><span class="lab-fraction"><b>${p.n}</b><i>${p.d}</i></span>${p.n>1&&p.d>1&&p.emphasis!==true?'<span class="lab-join-indicator">joined</span>':''}${canShowRemove?`<span class="lab-remove-corner" data-lab-delete="${p.id}" title="Delete ${labLabel(p)} block" aria-hidden="true">×</span>`:''}</button>`;
+return `<button type="button" class="lab-piece ${z==='work'&&p.emphasis===true&&Date.now()<(p.glowUntil||0)?'emphasized':z==='work'&&p.emphasis===false?'remainder':''} ${fresh?'pop':''}" style="--piece-width:${100*p.n/p.d/scale}%;--piece-color:${col};--piece-ink:${ink}" data-lab-id="${p.id}" data-d="${p.d}" aria-label="${labLabel(p)}${fragmentNote}. Drag to move; right-click or touch and hold for options; double-click or double-tap to simplify." title="${labLabel(p)}${fragmentNote} — right-click or touch and hold for options">${labPartitionHTML(p.n)}<span class="lab-fraction"><b>${p.n}</b><i>${p.d}</i></span>${p.n>1&&p.d>1&&p.emphasis!==true?'<span class="lab-join-indicator">joined</span>':''}${canShowRemove?`<span class="lab-remove-corner" data-lab-delete="${p.id}" title="Delete ${labLabel(p)} block" aria-hidden="true">×</span>`:''}</button>`;
 }
 function labBoardRows(){
   const rows=[];let row=[],used=0;
@@ -624,7 +630,7 @@ function labSumFragmentHTML(part){
     style="--piece-width:${100*part.units/part.denom}%;--piece-color:${col};--piece-ink:${ink}"
     data-lab-id="${p.id}" data-d="${p.d}"
     aria-label="${fractionLabel}${part.first?'':' (continued from the previous whole)'}. Drag to move; double-click to separate whole parts or simplify."
-    title="${fractionLabel}${part.first?'':' — continuation of the same block'} — double-click to separate or simplify">${label}</button>`;
+    title="${fractionLabel}${part.first?'':' — continuation of the same block'} — double-click to separate or simplify">${labPartitionHTML(part.units)}${label}</button>`;
 }
 function labSumRows(){
   const wholeRows=[];
