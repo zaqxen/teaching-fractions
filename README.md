@@ -32,7 +32,7 @@ This visual example demonstrates **equivalent fractions:** `1/2 = 2/4`.
 ### 1. Cutting board: build fractions
 
 - **Cut a block:** Right-click a block (or press and hold it on touchscreens), then choose **Cut into 2, 3, 4, 6, or 8**, where supported by the piece-size limits.
-- **Enter a fraction without cutting:** Open the context menu on a Cutting board block and choose **Enter fraction…**. Type the **numerator** (top number) and **denominator** (bottom number). The visual blocks are created for you.
+- **Enter a fraction without cutting:** Open the context menu on a Cutting board block (or press and hold an empty part of the board on a phone or tablet) and choose **Enter fraction…**. Type the **numerator** (top number) and **denominator** (bottom number). The visual blocks are created for you.
 - **See the part and the remainder:** Enter `3/4` to see a `3/4` block alongside the remaining `1/4`. The entered amount glows briefly for emphasis.
 - **Explore fractions greater than one:** Enter `5/2` to see two full wholes and an additional half, with whole boundaries shown separately.
 - **Keep your source pieces:** Drag pieces from the Cutting board to another row; the original pieces stay available for the next demonstration.
@@ -63,8 +63,8 @@ This visual example demonstrates **equivalent fractions:** `1/2 = 2/4`.
 
 ### 4. Simplifying fractions and mixed numbers
 
-- **Double-click a block** or open its right-click menu and choose **Simplify** to see a worked solution.
-- For a fraction such as `6/8`, the popup shows how dividing the numerator and denominator by their greatest common divisor gives `3/4` without changing its value.
+- **Double-click a block on desktop, or double-tap it on a touchscreen.** You can also right-click or press and hold the block and choose **Simplify** from the menu to see a worked solution.
+- For a fraction such as `6/8`, the popup shows how dividing the numerator and denominator by their greatest common divisor gives `3/4` without changing its value. **Fractions in the popup are displayed vertically, with the numerator above the denominator**, like textbook fraction notation.
 - In Addition, an improper fraction such as **`11/8`** can be taught in two visual stages:
   1. Double-click `11/8` to separate it into **`8/8 + 3/8`**, displayed across Whole 1 and Whole 2.
   2. Double-click the **`8/8`** block to simplify it to **`1`**, leaving **`1 + 3/8`**, or **`1 3/8`** as a mixed number.
@@ -98,7 +98,7 @@ This visual example demonstrates **equivalent fractions:** `1/2 = 2/4`.
 
 ### A simple teaching approach
 
-**Predict → Build → Compare → Explain → Reveal.** Ask your child or student to predict the result, let them move the pieces, talk through what they observe, and open the solution popup *last*. You can use the temporary arrow to draw attention to a bar or boundary without selecting text on the page.
+**Predict → Build → Compare → Explain → Reveal.** Ask your child or student to predict the result, let them move the pieces, talk through what they observe, and open the solution popup *last*. You can draw a temporary arrow over the page or a worked-solution popup while explaining a step. Popups stay open when you click outside or press Escape, and close only when you select **Close**.
 
 ## Frequently asked questions
 
@@ -109,7 +109,7 @@ Yes. It is a free, open-source fraction learning tool. You can use it at home, a
 No account is needed. Open the live website to use it online, or save `index.html` and open the file locally to use it without an internet connection.
 
 **Does it work on phones or tablets?**  
-The interface is responsive and supports touchscreen interactions. Press and hold a fraction block to open the cut/simplify menu. For extended demonstrations, a larger screen may be easier to use.
+Yes. The layout adapts to phones and tablets in portrait or landscape. **Press and hold a fraction block** to open the same cut/simplify menu available by right-clicking on a computer; **press and hold the empty cutting board** to enter a new fraction; **drag blocks with a finger** to compare or add; and **double-tap a block** to simplify it. Worked solutions use stacked numerator/denominator notation. On phones, scroll the page normally by swiping outside the movable fraction blocks. Desktop users can also draw temporary pointing arrows on the page background.
 
 **Does it show answers right away?**  
 The activity is designed to delay the numerical solution until a **Show Answer** or solution control is selected. This helps the child reason with the visual blocks first. The visible comparison symbol still provides immediate `<`, `>`, or `=` feedback.

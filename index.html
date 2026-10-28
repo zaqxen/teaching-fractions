@@ -244,7 +244,7 @@
 #cutlab .lab-piece.remainder{filter:saturate(.66) brightness(1.09);opacity:.9}
 #cutlab .lab-piece.remainder:hover{filter:saturate(.74) brightness(1.12)}
 .lab-board-help{font-size:13px;color:#365f78;margin:3px 0 12px;line-height:1.45}
-.lab-dialog{width:min(530px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;border:1px solid #90b2c6;border-radius:18px;padding:22px;color:#193d55;background:#fff;box-shadow:0 20px 75px #091a3470}
+.lab-dialog{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;z-index:11000;width:min(530px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;border:1px solid #90b2c6;border-radius:18px;padding:22px;color:#193d55;background:#fff;box-shadow:0 20px 75px #091a3470}
 .lab-dialog::backdrop{background:#071f36a9;backdrop-filter:blur(3px)}
 .lab-dialog-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .lab-dialog-head h3{margin:0 0 11px;font-size:22px}
@@ -267,7 +267,7 @@
 @media(max-width:560px){#cutlab .lab-board-row{height:64px;min-height:64px}#cutlab .lab-compare-stack .lab-surface{height:81px}#cutlab .lab-addition-bay .lab-surface{height:83px}.lab-dialog{padding:17px}}
 
 /* Always-available presentation arrows on background, never fraction pieces or controls. */
-#labArrowLayer{position:fixed;inset:0;width:100vw;height:100vh;z-index:10050;pointer-events:none;overflow:visible}
+#labArrowLayer{position:fixed;inset:0;width:100vw;height:100vh;z-index:13000;pointer-events:none;overflow:visible}
 #labArrowLayer .lab-point-arrow{opacity:1;transition:opacity .48s ease-out;filter:drop-shadow(0 2px 3px #142e5180)}
 #labArrowLayer .lab-point-arrow.fading{opacity:0}
 #labArrowLayer .arrow-outline{stroke:#fff;stroke-width:10;stroke-linecap:round}
@@ -473,13 +473,13 @@ body.lab-arrow-drawing{cursor:crosshair}
       </div>
       <p class="lab-entry-preview" id="labEntryPreview" aria-live="polite">3/4 = 0.75 of one whole</p>
       <p class="lab-entry-explain">Example: 3/4 shows a glowing 3/4 and an ordinary 1/4. 5/2 shows two glowing whole bars and a glowing half on the third bar.</p>
-      <div class="lab-dialog-actions"><button type="button" data-close-dialog="labEntryDialog">Cancel</button><button type="submit" class="primary">Show on cutting board</button></div>
+      <div class="lab-dialog-actions"><button type="button" data-close-dialog="labEntryDialog">Close</button><button type="submit" class="primary">Show on cutting board</button></div>
     </form>
   </dialog>
   <dialog id="labSolutionDialog" class="lab-dialog" aria-labelledby="labSolutionTitle">
     <div class="lab-dialog-head"><h3 id="labSolutionTitle">✨ How to simplify</h3><button type="button" data-close-dialog="labSolutionDialog" aria-label="Close solution">×</button></div>
     <div id="labSolutionBody" aria-live="polite"></div>
-    <div class="lab-dialog-actions"><button type="button" class="primary" data-close-dialog="labSolutionDialog">Got it</button></div>
+    <div class="lab-dialog-actions"><button type="button" class="primary" data-close-dialog="labSolutionDialog">Close</button></div>
   </dialog>
   <p class="footer">Works completely offline. No internet, account, external libraries or installation required.</p>
 </main>
@@ -557,7 +557,7 @@ function labOpenSolution(title,html){
   $('labSolutionTitle').textContent=title;
   const content=$('labSolutionBody');content.innerHTML=html;
   labTypesetSolutionFractions(content);
-  $('labSolutionDialog').showModal();
+  if(!$('labSolutionDialog').open)$('labSolutionDialog').show();
 }
 function labFlashEnteredPieces(ms=2300){
   const until=Date.now()+ms;
@@ -1068,7 +1068,7 @@ labRender();
 function labOpenEntry(){
   const n=labBoardEntry?.n??3,d=labBoardEntry?.d??4;
   $('labNumerator').value=n;$('labDenominator').value=d;
-  labEntryPreview();$('labEntryDialog').showModal();$('labNumerator').focus();$('labNumerator').select();
+  labEntryPreview();if(!$('labEntryDialog').open)$('labEntryDialog').show();$('labNumerator').focus();$('labNumerator').select();
 }
 function labEntryPreview(){
   const rawN=$('labNumerator').value,rawD=$('labDenominator').value,n=Number(rawN),d=Number(rawD);
@@ -1093,16 +1093,19 @@ function labShowBoardFraction(e){
   labBoardEntry={n,d};
   labMilestones={...labInitialMilestones(),cutWhole:true,path:'free'};
   labFresh=pieces.filter(p=>p.emphasis).map(p=>p.id);labSelected=null;
-  $('labEntryDialog').close();labCloseMenu();labRender();
+  labCloseMenu();labRender();
   labFlashEnteredPieces();
   labFeedback("Your fraction is on the cutting board. Select Show Answer to see its value and explanation.");
+  $('labEntryPreview').textContent += " · Loaded — click Close when ready.";
 }
 $('labMenuEnter').addEventListener('click',()=>{labCloseMenu();labOpenEntry()});
 $('labBoardFractionForm').addEventListener('submit',labShowBoardFraction);
 ['labNumerator','labDenominator'].forEach(id=>$(id).addEventListener('input',labEntryPreview));
 document.querySelectorAll('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>$(button.dataset.closeDialog).close()));
+// Keep teaching panels open on backdrop clicks and Escape. Only an explicit
+// Close control dismisses them.
 for(const id of ['labEntryDialog','labSolutionDialog']){
-  $(id).addEventListener('click',e=>{if(e.target===$(id))$(id).close()});
+  $(id).addEventListener('cancel',e=>e.preventDefault());
 }
 
 
@@ -1127,7 +1130,7 @@ const arrowMake=(tag,cls)=>{
 function arrowIgnores(target){
   if(!target||!target.closest)return true;
   // Leave controls and all fraction blocks untouched, including their children.
-  return Boolean(target.closest('[data-lab-id], .lab-piece, dialog, #labContextMenu, button, input, select, textarea, label, summary, a, [contenteditable], [role="button"], [role="menu"], [role="menuitem"]'));
+  return Boolean(target.closest('[data-lab-id], .lab-piece, #labContextMenu, button, input, select, textarea, label, summary, a, [contenteditable], [role="button"], [role="menu"], [role="menuitem"]'));
 }
 function arrowStart(event){
   if(arrowDrag||event.button!==0||event.isPrimary===false||arrowIgnores(event.target))return;
