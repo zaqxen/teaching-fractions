@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teaching Fractions — Cut a Whole | Interactive Fraction Lab</title>
+<meta name="description" content="An interactive, offline-ready fraction teaching tool. Cut and compare visual fraction blocks, combine pieces, explore mixed numbers, and reveal worked solutions.">
+<meta name="theme-color" content="#0a658f">
+<style>
+
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#183047;background:#f4f8fc;--blue:#147dba;--teal:#0c9b8b;--line:#d8e5f0}*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(120deg,#0a658f,#167d9e);color:white;padding:22px max(18px,calc((100vw - 1100px)/2))}h1{margin:0;font-size:clamp(25px,4vw,37px)}header p{margin:5px 0 0;color:#e0f6ff}.shell{max-width:1100px;margin:auto;padding:22px 16px 40px}.tabs{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}button,select,input{font:inherit}button{cursor:pointer;border:1px solid #aac9df;border-radius:10px;background:white;color:#17415c;padding:10px 14px;font-weight:650}button:hover{background:#e6f4ff}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f5aa28;outline-offset:2px}.tabs button.active,.primary{background:#087cb1!important;color:white!important;border-color:#087cb1!important}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:clamp(15px,3vw,27px);box-shadow:0 5px 20px #17394e0a;margin-bottom:18px}.hidden{display:none}h2{margin:0 0 9px;font-size:23px}h3{margin:16px 0 9px}.muted{color:#52677a}.controls{display:flex;gap:15px;flex-wrap:wrap;align-items:end;margin:20px 0}.controls label{display:flex;flex-direction:column;gap:5px;font-weight:650}select,input[type=number]{border:1px solid #9eb7c8;border-radius:9px;padding:9px;background:white;color:#17394e;min-width:88px}.frac{display:inline-grid;grid-template-rows:1fr 1fr;vertical-align:middle;text-align:center;line-height:1.1;font-size:1.4em;min-width:28px}.frac .top{border-bottom:2px solid currentColor;padding:0 5px 3px}.frac .bottom{padding:3px 5px 0}.equation{font-size:clamp(20px,3vw,30px);display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0}.barrow{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:center;margin:12px 0}.bar{display:flex;height:54px;border:2px solid #41738b;border-radius:7px;overflow:hidden;max-width:760px;background:#eaf1f5}.piece{flex:1;min-width:0;border-right:1px solid #86a7b7;position:relative;display:grid;place-items:center;font-size:13px;font-weight:700;color:#1b4658}.piece:last-child{border-right:0}.piece.filled{background:#4fc1b2;color:#073d3b}.piece.filled.alt{background:#f6bd50;color:#523b0f}.bar.clickable .piece{cursor:pointer}.bar.clickable .piece:hover{filter:brightness(.93)}.explain{background:#edf8f9;border-left:4px solid #0a9d92;padding:12px 16px;border-radius:6px;margin-top:15px;line-height:1.65}.step{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #e5edf4}.step .n{border-radius:50%;background:#d9effb;color:#125b83;width:32px;height:32px;display:grid;place-items:center;flex:none;font-weight:800}.step p{margin:3px 0 0}.actions{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}.feedback{font-weight:700;min-height:27px;padding-top:7px}.good{color:#087650}.bad{color:#b04724}.question-card{border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}.question-card .equation{margin:8px 0}.answers{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.answers select{min-width:80px}.score{font-weight:800;font-size:20px;margin:15px 0}.hint{background:#fff8e9;padding:11px;border-radius:8px;margin-top:10px}.footer{color:#536c7c;font-size:13px;margin-top:20px}.fraction-legend{font-size:12px;color:#536c7c}.note{font-size:14px}.mode-choices{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.mode-choices label{background:#f0f6fb;padding:9px 12px;border-radius:9px}input[type=radio]{accent-color:#087cb1}input[type=range]{width:100%;max-width:400px;accent-color:#087cb1}@media(max-width:540px){.barrow{grid-template-columns:53px 1fr;gap:7px}.bar{height:45px}.piece{font-size:10px}.shell{padding:14px 10px}.panel{padding:15px}.tabs button{flex:1}.equation{gap:7px}}
+
+/* The Cut-a-Whole Lab: true-to-scale pieces and tactile tools */
+:root{--whole:#2f6fcd;--halves:#159c8a;--quarters:#f1a933;--eighths:#9670df;--sixteenths:#d96b96;--thirtyseconds:#79a82c}
+.lab-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:9px}
+.lab-sub{font-size:15px;line-height:1.6;color:#48657b;max-width:750px;margin:0 0 18px}
+.lab-tools{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:17px 0}
+.lab-tools .lab-tool{display:flex;gap:8px;align-items:center;border:2px solid #bacbd8;background:#fff;min-height:48px}
+.lab-tools .lab-tool.active{background:#165d88;color:white;border-color:#165d88;box-shadow:0 3px 10px #0c57822c}
+.lab-legend{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:7px 0 15px}
+.lab-key{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:99px;border:1px solid #d3dfe9;background:#fff;font-weight:720;font-size:13px;color:#294c63}
+.lab-key i{display:inline-block;width:15px;height:15px;background:var(--piece-color);border-radius:4px;border:1px solid #2345}
+.lab-hint{background:#e8f6f4;border-left:5px solid #12a494;border-radius:9px;padding:12px 15px;font-size:16px;line-height:1.55;margin:13px 0 15px}
+.lab-work{background:#f3f8fc;border:1px solid #d0e1ec;border-radius:15px;padding:clamp(13px,2.5vw,20px);margin:12px 0 20px}
+.lab-row-title{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:9px}
+.lab-row-title strong{font-size:17px}
+.lab-reading{font-size:15px;font-weight:700;color:#37647c;min-height:22px;margin:8px 0 2px;line-height:1.55}
+.lab-grid-note{font-size:12px;color:#557184;line-height:1.4;margin:5px 0 0}
+.lab-surface{width:100%;height:88px;position:relative;border:3px solid #85a6ba;border-radius:12px;overflow:hidden;display:flex;align-items:stretch;background-color:white;background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(6.25% - 1px),#d9e7f1 calc(6.25% - 1px),#d9e7f1 6.25%);box-shadow:inset 0 1px 4px #15394c16;transition:background-color .14s,border-color .14s}
+.lab-surface.over{background-color:#e4fff1;border-color:#159b80;outline:3px solid #7ad7b4;outline-offset:2px}
+.lab-surface.empty:after{content:attr(data-empty);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#68849b;text-align:center;font-size:14px;padding:0 10px;pointer-events:none}
+.lab-piece{position:relative;flex:0 0 auto;width:var(--piece-width);height:100%;min-width:0;margin:0;padding:0;border:2px solid #ffffff77;border-right:2px solid #1e385466;border-radius:0;background:var(--piece-color);color:var(--piece-ink);font-size:clamp(11px,1.4vw,20px);font-weight:900;touch-action:manipulation;user-select:none;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;overflow:hidden;text-shadow:0 1px #ffffff33;transition:filter .1s}
+.lab-piece:hover{filter:brightness(1.06);z-index:1}
+.lab-piece:focus-visible{z-index:2;outline:4px solid #fcf7a5;outline-offset:-4px}
+.lab-piece.chosen{outline:4px solid #183f64;outline-offset:-5px;z-index:2}
+.lab-piece .lab-fraction{display:flex;flex-direction:column;align-items:center;line-height:1.0;min-width:0}
+.lab-piece .lab-fraction b{font-size:inherit;font-weight:900}
+.lab-piece .lab-fraction i{border-top:2px solid currentColor;padding:2px 2px 0;font-size:.89em;font-style:normal;margin-top:2px}
+.lab-piece[data-d="1"] .lab-fraction i{display:none}
+.lab-piece[data-d="16"]{font-size:12px}
+.lab-piece[data-d="32"]{font-size:10px}
+.lab-piece[data-d="32"] .lab-fraction{transform:rotate(-90deg)}
+#cutlab.mode-cut .lab-piece{cursor:var(--scissor-cursor, crosshair)}
+#cutlab.mode-move .lab-piece{cursor:grab;touch-action:none}
+#cutlab.mode-move .lab-piece:active{cursor:grabbing}
+#cutlab.mode-cut .lab-piece:not([data-d="32"]):hover:before{content:"";position:absolute;left:50%;top:3px;bottom:3px;border-left:3px dashed #17364a;opacity:.85;pointer-events:none}
+#cutlab.mode-cut .lab-piece:not([data-d="32"]):hover:after{content:"✂";position:absolute;right:3px;top:0;font-size:18px;color:#13243a;text-shadow:0 1px 3px white;pointer-events:none}
+#cutlab.mode-cut .lab-piece[data-d="32"]{cursor:not-allowed}
+.lab-piece.pop{animation:pieceBorn .3s ease-out}
+@keyframes pieceBorn{from{transform:scale(.92);filter:brightness(1.2)}to{transform:scale(1);filter:brightness(1)}}
+.lab-section-title{font-size:19px;font-weight:850;margin:22px 0 6px}
+.lab-compare-rows{display:grid;gap:13px}
+.lab-bay{display:grid;grid-template-columns:126px minmax(0,1fr);align-items:center;gap:12px}
+.lab-bay-label{font-size:15px;font-weight:820;color:#294b65;line-height:1.35}
+.lab-bay-label span{font-size:12px;display:block;color:#5c7587;font-weight:500}
+.lab-bay-body{min-width:0}
+.lab-bay .lab-surface{height:75px}
+.lab-result{margin-top:16px;padding:16px;border-radius:13px;background:#eaf6fa;border:1px solid #cadfe9;min-height:75px}
+.lab-result strong{font-size:18px}
+.lab-equality{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:7px;line-height:1.4;font-size:18px;font-weight:760;color:#165e76}
+.lab-equality.win{color:#086e58}
+.lab-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:11px 0 16px}
+.lab-step{padding:10px 11px;border:1px solid #d5e3ed;border-radius:10px;background:white;color:#547187;font-size:13px;line-height:1.35}
+.lab-step.done{border-color:#73cbb2;background:#e7f8f1;color:#126d54}
+.lab-step.current{border-color:#3984c3;background:#eaf3ff;color:#1a5586;font-weight:800}
+.lab-step b{display:block;font-size:15px;margin-bottom:5px}
+.lab-status{min-height:29px;color:#22566e;font-weight:690;margin-top:9px;line-height:1.5}
+.lab-ghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);background:var(--piece-color);color:var(--piece-ink);padding:12px 20px;border-radius:10px;border:2px solid white;box-shadow:0 10px 25px #0004;font-size:22px;font-weight:900;white-space:nowrap}
+.lab-action-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.lab-caption{color:#557283;font-size:13px;margin:5px 0 0}
+@media(max-width:760px){.lab-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-bay{grid-template-columns:1fr;gap:6px}.lab-bay-label span{display:inline}.lab-surface{height:78px}.lab-bay .lab-surface{height:70px}}
+@media(max-width:470px){.lab-tools .lab-tool{flex:1;justify-content:center}.lab-piece{font-size:12px}.lab-piece[data-d="8"]{font-size:10px}.lab-piece[data-d="16"] .lab-fraction i{font-size:.72em}.lab-steps{gap:6px}.lab-step{padding:8px}.lab-equality{font-size:15px}}
+
+/* Fraction workshop v3: directly manipulate, combine, and simplify blocks */
+.lab-steps{grid-template-columns:repeat(5,minmax(0,1fr))}
+.lab-controls-help{background:#f2f7fd;border:1px solid #d4e4f0;border-radius:12px;padding:11px 14px;margin:10px 0 16px;line-height:1.65;font-size:14px}
+.lab-controls-help b{color:#185c82}
+.lab-compare-rows{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:15px;row-gap:17px;align-items:start}
+.lab-bay{display:block;min-width:0}
+.lab-bay:last-child{grid-column:1/-1}
+.lab-bay-label{margin-bottom:9px}
+.lab-bay-label span{display:inline;margin-left:8px}
+.lab-bay .lab-surface{height:87px}
+.lab-surface{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;align-items:stretch}
+.lab-piece{touch-action:none;cursor:grab;transition:filter .12s,box-shadow .12s}
+.lab-piece:active{cursor:grabbing}
+.lab-piece.drop-target{outline:4px dashed #152a4b;outline-offset:-5px;z-index:3;filter:brightness(1.12)}
+.lab-piece .lab-fraction{pointer-events:none}
+.lab-piece[data-d="16"] .lab-fraction,.lab-piece[data-d="32"] .lab-fraction{font-size:11px}
+.lab-piece[data-d="32"] .lab-fraction{transform:none}
+.lab-piece[data-d="64"] .lab-fraction{font-size:9px;transform:rotate(-90deg)}
+.lab-piece.pop{animation:pieceBorn .30s ease-out}
+.lab-piece .lab-join-indicator{position:absolute;left:4px;bottom:3px;font-size:10px;line-height:1;background:#fff9;border-radius:5px;padding:2px 4px;color:#17364a}
+.lab-ruler{display:flex;justify-content:space-between;font-size:11px;color:#526d7d;font-weight:650;margin-top:5px}
+.lab-ruler:after{content:'1 whole';}
+.lab-ruler:before{content:'0';}
+.lab-context{position:fixed;z-index:12000;min-width:192px;background:white;border:2px solid #85a9c0;border-radius:12px;box-shadow:0 15px 45px #17394e50;padding:8px;display:grid;gap:5px}
+.lab-context[hidden]{display:none}
+.lab-context-title{padding:6px 9px;font-size:13px;color:#435f72;font-weight:800}
+.lab-context button{border:0;text-align:left;width:100%;padding:11px 12px;border-radius:8px;color:#1b4159}
+.lab-context button:hover:not(:disabled){background:#dceff8}
+.lab-context button:disabled{opacity:.4;cursor:not-allowed}
+.lab-context button small{display:block;font-size:11px;font-weight:400;color:#4e6878}
+.lab-feedback{border:1px solid #bcdbea;background:#eff9fd;border-radius:10px;padding:9px 12px;font-weight:700;color:#164e6e;margin:10px 0;min-height:42px}
+.lab-head .lab-sub{margin-bottom:0}
+@media(max-width:760px){.lab-steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:540px){.tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}.tabs button{flex:0 0 auto;white-space:nowrap}.lab-compare-rows{grid-template-columns:1fr}.lab-bay:last-child{grid-column:auto}.lab-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-controls-help{font-size:13px}.lab-bay .lab-surface{height:76px}}
+
+/* v4: non-depleting cutting board, high contrast, vertical comparison */
+#cutlab .lab-piece,#cutlab .lab-piece:hover,#cutlab .lab-piece:focus,#cutlab .lab-piece:active{background:var(--piece-color)!important;color:var(--piece-ink)!important}
+#cutlab .lab-piece:hover{filter:brightness(1.01);box-shadow:inset 0 0 0 3px #183b5580;z-index:2}
+#cutlab .lab-piece.drop-target{filter:brightness(.94);outline:4px dashed #142e46;outline-offset:-5px}
+.lab-copy-note{display:inline-flex;gap:7px;align-items:center;border:1px solid #9bd2be;background:#e4f9ec;color:#146342;border-radius:99px;padding:5px 10px;font-size:12px;font-weight:800}
+.lab-compare-rows{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.lab-compare-stack{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:13px;isolation:isolate}
+.lab-compare-stack .lab-bay{min-width:0;grid-column:auto}
+.lab-compare-stack .lab-bay-label{margin-bottom:6px}
+.lab-compare-stack .lab-bay-label strong{font-size:17px}
+.lab-compare-stack .lab-surface{height:78px}
+.lab-compare-stack .lab-reading{margin:4px 0 0;min-height:23px}
+.lab-compare-guide{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:visible;width:100%;height:100%}
+.lab-compare-verdict{border:2px solid #c2d8e7;background:#f4faff;border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:14px;line-height:1.45}
+.lab-compare-verdict .symbol{background:#265e89;border-radius:12px;min-width:58px;height:56px;display:grid;place-items:center;font-size:39px;font-weight:950;color:white;flex:none}
+.lab-compare-verdict.equal{background:#eaf9f2;border-color:#75cab0}
+.lab-compare-verdict.equal .symbol{background:#128265}
+.lab-compare-verdict .message{font-weight:740;color:#234c63}
+.lab-compare-verdict .lesson{font-size:13px;color:#4b6878;font-weight:520;margin-top:4px}
+.lab-compare-stack .lab-surface{position:relative}
+.lab-compare-stack .lab-bay .lab-surface{outline-offset:3px}
+.lab-compare-stack .lab-comparison-ruler:after{content:attr(data-span)}
+.lab-compare-stack[data-scale="2"] .lab-surface:before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px dotted #5a7d96;z-index:2;pointer-events:none}
+.lab-comparison-legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;color:#3b6074;font-size:12px;margin-top:5px}
+.lab-comparison-legend .line-chip{width:14px;height:4px;display:inline-block;vertical-align:middle;margin-right:3px;border-radius:8px}
+.lab-addition-bay{border-top:1px solid #cddfea;padding-top:17px}
+.lab-addition-bay .lab-surface{height:80px}
+@media(max-width:540px){.lab-compare-rows{grid-template-columns:1fr}.lab-compare-verdict{padding:11px;gap:10px}.lab-compare-verdict .symbol{min-width:48px;height:48px;font-size:34px}.lab-compare-stack .lab-surface{height:74px}}
+/* v5: cuts with selectable numbers and two-whole addition scale */
+:root{--thirds:#8660bd;--sixths:#eb6b72}
+.lab-context{min-width:236px;max-width:min(310px,calc(100vw - 16px));max-height:calc(100vh - 16px);overflow-y:auto}
+.lab-cut-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-bottom:7px}
+.lab-cut-choices button{border:1px solid #b9d4e5;background:#f2f8fc;border-radius:8px;text-align:center;padding:9px 3px;font-size:13px;font-weight:780}
+.lab-cut-choices button:hover:not(:disabled){background:#d1ecfa}
+.lab-cut-choices button:last-child:nth-child(odd){grid-column:1/-1}
+.lab-two-ruler{display:flex;justify-content:space-between;align-items:center;color:#3c6076;font-size:12px;font-weight:750;margin:6px 0 4px}
+.lab-two-ruler span:nth-child(2){position:relative;color:#144e78}
+.lab-two-ruler span:nth-child(2):before{content:'↑';position:absolute;left:50%;transform:translateX(-50%);bottom:11px;font-size:17px;color:#144e78}
+#labSum{background-image:linear-gradient(to right,transparent calc(50% - 2px),#225983 calc(50% - 2px),#225983 calc(50% + 2px),transparent calc(50% + 2px)),repeating-linear-gradient(to right,transparent 0,transparent calc(6.25% - 1px),#d9e7f1 calc(6.25% - 1px),#d9e7f1 6.25%)}
+#combinedBar{position:relative;background-image:linear-gradient(to right,transparent calc(50% - 2px),#225983 calc(50% - 2px),#225983 calc(50% + 2px),transparent calc(50% + 2px));background-blend-mode:normal}
+#combinedBar:after{content:'';position:absolute;left:calc(50% - 2px);top:0;bottom:0;width:4px;background:#225983;pointer-events:none;opacity:.8}
+.lab-piece[data-d="3"],.lab-piece[data-d="6"]{font-size:clamp(12px,1.5vw,19px)}
+.lab-piece[data-d="24"],.lab-piece[data-d="48"],.lab-piece[data-d="96"]{font-size:10px}
+.lab-piece[data-d="24"] .lab-fraction,.lab-piece[data-d="48"] .lab-fraction,.lab-piece[data-d="96"] .lab-fraction{font-size:10px}
+@media(max-width:550px){.lab-cut-choices{gap:4px}.lab-cut-choices button{font-size:12px;padding:8px 3px}.lab-two-ruler{font-size:11px}}
+/* v6: compact student-first layout, row cleanup, and compare-to-add controls */
+.lab-teacher-guide{border:1px solid #c9dce9;background:#f7fbff;border-radius:12px;padding:0 13px;margin:13px 0 15px}
+.lab-teacher-guide summary{cursor:pointer;padding:12px 3px;font-size:14px;font-weight:790;color:#22536e;list-style:disclosure-closed}
+.lab-teacher-guide[open] summary{border-bottom:1px solid #d5e5f0;margin-bottom:12px;list-style:disclosure-open}
+.lab-teacher-guide .lab-controls-help{margin:0 0 12px}
+.lab-teacher-guide .lab-hint{margin-bottom:12px}
+.lab-teacher-guide .lab-steps{margin-bottom:12px}
+.lab-teacher-guide .lab-caption{padding-bottom:12px}
+.lab-bay-label .lab-clear-zone{margin-left:auto;flex:none;font-size:12px;line-height:1.2;padding:7px 10px;white-space:nowrap;color:#913348;background:#fff4f5;border:1px solid #f1bdc5}
+.lab-bay-label .lab-clear-zone:hover{background:#ffe7eb;color:#772032}
+.lab-bay-label{display:flex;align-items:center;flex-wrap:wrap;gap:5px 9px}
+.lab-bay-label span{margin-left:0}
+.lab-piece .lab-remove-corner{position:absolute;right:2px;top:2px;width:23px;height:23px;border-radius:6px;display:grid;place-items:center;background:#fff;color:#a52b3c!important;border:1px solid #e8b9bf;font-size:19px;font-weight:900;line-height:1;z-index:7;opacity:0;pointer-events:none;box-shadow:0 1px 3px #0002}
+.lab-piece:hover .lab-remove-corner,.lab-piece:focus-visible .lab-remove-corner{opacity:1;pointer-events:auto}
+.lab-piece .lab-remove-corner:hover{background:#ffe3e9;color:#871d31!important}
+@media(hover:none){.lab-piece .lab-remove-corner{opacity:.95;pointer-events:auto}}
+.lab-compare-verdict .symbol{border:0;padding:0;min-width:58px;height:56px}
+.lab-compare-verdict .symbol:disabled{cursor:default;opacity:1}
+.lab-compare-verdict.equal .symbol{cursor:pointer;box-shadow:0 3px 0 #085d49}
+.lab-compare-verdict.equal .symbol:hover{background:#08644d;transform:translateY(-1px)}
+.lab-compare-verdict.equal .symbol:active{transform:translateY(1px);box-shadow:none}
+.lab-equal-hint{display:inline-block;margin-top:5px;font-size:12px;font-weight:800;color:#077656}
+.lab-equal-hint[hidden]{display:none}
+.lab-merge-all{border-color:#91a8bd;background:#eff7ff;color:#184f77}
+.lab-sum-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+@media(max-width:550px){.lab-compare-verdict .symbol{min-width:48px;height:48px}.lab-bay-label{gap:5px}.lab-bay-label .lab-clear-zone{margin-left:0}}
+
+
+/* Fixed-depth raised blocks and multi-row cutting board. */
+#cutlab{--lab-depth:7px}
+/* A gentler raised top face and a thinner shadowed sidewall: widths remain mathematically exact. */
+#cutlab .lab-surface{height:91px;align-items:flex-start;overflow-x:auto;overflow-y:hidden;padding-top:4px;background-position:left top;box-shadow:inset 0 2px 8px #18486212,inset 0 -3px 0 #7e9db31c}
+#cutlab .lab-compare-stack .lab-surface{height:87px}
+#cutlab .lab-addition-bay .lab-surface{height:89px}
+#cutlab .lab-piece,#cutlab .lab-piece:hover,#cutlab .lab-piece:focus,#cutlab .lab-piece:active{
+  position:relative;align-self:flex-start;height:calc(100% - var(--lab-depth) - 8px);margin-top:0;
+  border:1px solid #ffffff9a;border-right:1px solid #12355366;border-bottom:1px solid #18304773;
+  border-radius:5px 5px 2px 2px;
+  background:linear-gradient(180deg,#ffffff55 0%,#ffffff12 16%,#ffffff00 52%,#0e283b18 84%,#0a203233 100%),var(--piece-color)!important;
+  color:var(--piece-ink)!important;
+  box-shadow:inset 0 3px 0 #ffffff5f,inset -2px 0 0 #081f332b,
+    0 var(--lab-depth) 0 color-mix(in srgb,var(--piece-color) 45%,#183047),
+    0 calc(var(--lab-depth) + 2px) 4px #193d5942;
+  text-shadow:0 1px 1px #0002;
+  transition:filter .12s,transform .12s,box-shadow .12s;
+  outline:none;
+}
+#cutlab .lab-piece:hover{filter:brightness(1.04);transform:translateY(-1px);z-index:2}
+#cutlab .lab-piece.drop-target{filter:brightness(.97);z-index:4}
+#cutlab .lab-piece.chosen,#cutlab .lab-piece:focus-visible{z-index:3;box-shadow:inset 0 0 0 3px #163e62,inset 0 3px 0 #ffffff5f,inset -2px 0 0 #081f332b,0 var(--lab-depth) 0 color-mix(in srgb,var(--piece-color) 45%,#183047),0 calc(var(--lab-depth) + 2px) 4px #193d5942}
+#cutlab .lab-piece.pop{animation:labBlockPop .32s ease-out}
+@keyframes labBlockPop{0%{transform:translateY(-6px) scale(.97);filter:brightness(1.18)}100%{transform:translateY(0) scale(1);filter:brightness(1)}}
+#cutlab .lab-piece .lab-fraction{position:relative;z-index:1}
+.lab-ghost{background:linear-gradient(#ffffff4d,#0000001f),var(--piece-color);box-shadow:0 5px 0 color-mix(in srgb,var(--piece-color) 45%,#183047),0 11px 16px #122a4852;border:2px solid #ffffffc0}
+
+
+
+/* Cutting board: one real-width ruler row for every whole (5/2 has three). */
+.lab-board-ruler{display:flex;justify-content:space-between;color:#526d7d;font-size:11px;font-weight:700;margin:3px 0 6px}
+#cutlab #labWork.lab-board {height:auto;min-height:79px;display:flex;flex-direction:column;gap:9px;overflow:visible;padding:5px;border:0;background:transparent;box-shadow:none}
+#cutlab .lab-board-row {position:relative;display:flex;flex:none;align-items:flex-start;width:100%;height:72px;min-height:72px;padding:4px 3px 0;border:2px solid #86a8be;border-radius:10px;background:repeating-linear-gradient(to right,#f4f8fc 0%,#f4f8fc calc(12.5% - 1px),#dce9f3 calc(12.5% - 1px),#dce9f3 12.5%);box-shadow:inset 0 3px 7px #15426220,0 2px 5px #22517818;overflow:visible}
+#cutlab .lab-board-row .lab-piece{height:calc(100% - var(--lab-depth) - 4px)}
+#cutlab .lab-piece.emphasized {z-index:5;animation:labGlowFade 2.3s ease-out forwards;}
+#cutlab .lab-piece.emphasized:hover{z-index:7;filter:brightness(1.05)}
+@keyframes labGlowFade{0%{box-shadow:inset 0 0 0 2px #ffd85d,inset 0 3px 0 #ffffff5f,inset -2px 0 0 #081f332b,0 var(--lab-depth) 0 color-mix(in srgb,var(--piece-color) 45%,#183047),0 calc(var(--lab-depth) + 2px) 4px #193d5942,0 0 0 2px #ffe79088,0 0 12px #ffcf4da8;filter:brightness(1.05) saturate(1.08)}55%{box-shadow:inset 0 0 0 2px #ffd85d,inset 0 3px 0 #ffffff5f,inset -2px 0 0 #081f332b,0 var(--lab-depth) 0 color-mix(in srgb,var(--piece-color) 45%,#183047),0 calc(var(--lab-depth) + 2px) 4px #193d5942,0 0 0 1px #ffe79058,0 0 8px #ffcf4d72;filter:brightness(1.03)}100%{box-shadow:inset 0 3px 0 #ffffff5f,inset -2px 0 0 #081f332b,0 var(--lab-depth) 0 color-mix(in srgb,var(--piece-color) 45%,#183047),0 calc(var(--lab-depth) + 2px) 4px #193d5942;filter:brightness(1)}}
+#cutlab .lab-piece.remainder{filter:saturate(.66) brightness(1.09);opacity:.9}
+#cutlab .lab-piece.remainder:hover{filter:saturate(.74) brightness(1.12)}
+.lab-board-help{font-size:13px;color:#365f78;margin:3px 0 12px;line-height:1.45}
+.lab-dialog{width:min(530px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;border:1px solid #90b2c6;border-radius:18px;padding:22px;color:#193d55;background:#fff;box-shadow:0 20px 75px #091a3470}
+.lab-dialog::backdrop{background:#071f36a9;backdrop-filter:blur(3px)}
+.lab-dialog-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.lab-dialog-head h3{margin:0 0 11px;font-size:22px}
+.lab-dialog-head button{font-size:27px;padding:0 9px;line-height:34px}
+.lab-dialog p{line-height:1.55;color:#47657a}
+.lab-dialog-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:19px}
+.lab-entry-fields{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-top:17px}
+.lab-entry-fields label{font-weight:750;font-size:13px;color:#235c75;display:flex;flex-direction:column;gap:5px}
+.lab-entry-fields input{width:115px;min-width:85px;font-size:19px;font-weight:800}
+.lab-entry-slash{font-weight:900;font-size:31px;padding-bottom:7px;color:#4e7995}
+.lab-entry-preview{font-weight:850;font-size:18px;color:#116991!important;margin:15px 0 8px}
+.lab-entry-explain{background:#eef7fc;padding:11px 13px;border-radius:9px;font-size:13px}
+.lab-entry-preview.invalid{color:#aa302a!important}
+.lab-solution-step{display:flex;gap:12px;align-items:flex-start;margin:13px 0;padding:11px;border-radius:10px;background:#f1f7fc;line-height:1.55}
+.lab-solution-step .num{display:grid;place-items:center;flex:none;background:#b8e0f4;width:29px;height:29px;border-radius:50%;font-weight:900;color:#10506c}
+.lab-solution-formula{font-size:clamp(20px,4vw,29px);font-weight:850;text-align:center;padding:16px 10px;background:#e9faf3;color:#097357;border-radius:12px;margin:13px 0}
+.lab-compare-verdict.ready .symbol{cursor:pointer;box-shadow:0 3px 0 #164b75}
+.lab-compare-verdict.ready .symbol:hover{background:#174d76;transform:translateY(-1px)}
+.lab-compare-verdict.ready .symbol:active{transform:translateY(1px);box-shadow:none}
+@media(max-width:560px){#cutlab .lab-board-row{height:64px;min-height:64px}#cutlab .lab-compare-stack .lab-surface{height:81px}#cutlab .lab-addition-bay .lab-surface{height:83px}.lab-dialog{padding:17px}}
+
+/* Always-available presentation arrows on background, never fraction pieces or controls. */
+#labArrowLayer{position:fixed;inset:0;width:100vw;height:100vh;z-index:10050;pointer-events:none;overflow:visible}
+#labArrowLayer .lab-point-arrow{opacity:1;transition:opacity .48s ease-out;filter:drop-shadow(0 2px 3px #142e5180)}
+#labArrowLayer .lab-point-arrow.fading{opacity:0}
+#labArrowLayer .arrow-outline{stroke:#fff;stroke-width:10;stroke-linecap:round}
+#labArrowLayer .arrow-shaft{stroke:#ef3b56;stroke-width:5.5;stroke-linecap:round}
+#labArrowLayer .arrow-head{fill:#ef3b56;stroke:#fff;stroke-width:3;stroke-linejoin:round}
+/* This is a tactile teaching surface, not selectable prose. */
+html,body,body *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none}
+body,body p,body h1,body h2,body h3,body strong,body span,body div,body small{cursor:default}
+input,textarea,[contenteditable="true"]{-webkit-user-select:text!important;user-select:text!important;cursor:text!important}
+button,.lab-piece,.lab-context button{cursor:pointer}
+body.lab-arrow-drawing{cursor:crosshair}
+@media(prefers-reduced-motion:reduce){#labArrowLayer .lab-point-arrow{transition:none}}
+
+/* Each Addition bar is one whole. Only active bars and one spare drop row exist. */
+#cutlab #labSum.lab-sum-board{height:auto!important;min-height:0;padding:0;margin:0;border:0;border-radius:0;background:none!important;box-shadow:none;display:flex;flex-direction:column;gap:16px;overflow:visible;align-items:stretch}
+#cutlab .lab-sum-row{position:relative;display:flex;align-items:flex-start;width:100%;height:var(--sum-row-height,68px);min-height:38px;flex:none;padding:3px 4px 0;border:2px solid #789db5;border-radius:12px;background:repeating-linear-gradient(to right,#f5f9fd 0%,#f5f9fd calc(12.5% - 1px),#dbeaf3 calc(12.5% - 1px),#dbeaf3 12.5%);box-shadow:inset 0 2px 6px #15426217,0 2px 5px #22517815;overflow:visible}
+#cutlab .lab-sum-row .lab-piece{height:calc(100% - var(--lab-depth) - 4px);flex-shrink:0}
+#cutlab .lab-sum-row .lab-piece .lab-fraction{font-size:clamp(10px,1.25vw,15px)}
+#cutlab .lab-sum-row .lab-piece .lab-fraction i{padding-top:1px;margin-top:1px}
+#cutlab .lab-sum-row.is-empty{border-style:dashed;background:#f9fcff;min-height:43px;cursor:default}
+#cutlab .lab-sum-row.is-empty:after{content:'Drop another fraction here';position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;color:#597a91;font-size:13px;font-weight:650}
+#cutlab .lab-sum-row.over{background:#e6fff0;border-color:#179a79;outline:2px solid #a4e5c9}
+#cutlab .lab-sum-index{position:absolute;right:8px;top:-13px;z-index:3;padding:1px 7px;border-radius:99px;background:#e9f2fa;border:1px solid #c7dbe7;color:#355e7a;font-size:10px;font-weight:700;pointer-events:none}
+#cutlab .lab-addition-bay .lab-sum-intro{font-size:13px;color:#58778b;line-height:1.45;margin:6px 0 10px}
+#cutlab .lab-sum-actions{justify-content:flex-end;align-items:center;gap:8px;margin-top:13px}
+#cutlab .lab-sum-actions .lab-merge-all{font-size:12px;padding:8px 11px;font-weight:650}
+#cutlab #labShowAnswer{font-size:12px;padding:8px 13px;background:#1b729e;color:white;border:1px solid #1b729e;border-radius:8px}
+#cutlab #labShowAnswer:hover:not(:disabled){background:#135f86}
+#cutlab #labShowAnswer:disabled{opacity:.48;cursor:not-allowed}
+#cutlab #labSumRead{font-size:13px;color:#557184;font-weight:600}
+@media(max-width:560px){#cutlab .lab-sum-row{height:var(--sum-row-height,60px)}#cutlab .lab-sum-row.is-empty:after{font-size:12px}}
+
+/* Student mode: keep calculations behind explicit reveal buttons. */
+#cutlab .lab-row-actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+#cutlab .lab-reveal{font-size:12px;padding:7px 11px;background:#fff;color:#165c81;border:1px solid #8db9d0;border-radius:8px;flex:none}
+#cutlab .lab-reveal:hover:not(:disabled){background:#e8f4fb}
+#cutlab .lab-reveal:disabled{opacity:.45;cursor:not-allowed}
+#cutlab .lab-bay-label .lab-reveal{margin-left:auto}
+#cutlab .lab-bay-label .lab-clear-zone{margin-left:0}
+#cutlab #labCompareAnswer{margin-top:8px}
+/* The source slice spans whole boundaries. Only its visual window is clipped;
+   no new fraction is calculated or shown for the overlapping part. */
+#cutlab .lab-sum-row{isolation:isolate;gap:0}
+#cutlab .lab-sum-row .lab-sum-fragment{position:relative;z-index:2;min-width:0;margin:0;flex:0 0 var(--piece-width);border-radius:1px;overflow:hidden;padding:2px 0;line-height:1.1}
+#cutlab .lab-sum-fragment.sum-fragment-overflow{border-right:0;border-top-right-radius:0;border-bottom-right-radius:0}
+#cutlab .lab-sum-fragment.sum-fragment-continued{border-left:0;border-top-left-radius:0;border-bottom-left-radius:0}
+#cutlab .lab-sum-fragment .lab-fraction{font-size:clamp(10px,1.35vw,18px);max-width:100%}
+#cutlab .lab-sum-continuation{font-size:clamp(13px,1.7vw,18px);font-weight:900;opacity:.88}
+#cutlab .lab-sum-boundary{position:absolute;inset:-2px;z-index:8;pointer-events:none;border:3px solid #3b6987;border-radius:12px;box-shadow:0 0 0 2px #ffffffa8,inset 0 0 0 1px #ffffff78}
+#cutlab .lab-sum-index{z-index:10;right:9px;top:-12px;background:#e8f4fe;color:#21516c;border:1px solid #9bbfd4;font-size:11px}
+#cutlab .lab-sum-row.is-empty .lab-sum-boundary{border-style:dashed;opacity:.75}
+#cutlab .lab-sum-row .lab-piece:hover{z-index:3}
+@media(max-width:600px){#cutlab .lab-bay-label .lab-reveal{margin-left:0}}
+
+</style>
+</head>
+<body>
+<header>
+  <h1>✂️ Cut a Whole</h1>
+  <p>Build, cut, combine and compare 3D fractions · Works offline</p>
+</header>
+<main class="shell">
+<section class="panel" id="cutlab">
+<div class="lab-head"><div><h2>✂️ Cut, Combine &amp; Compare Fractions</h2></div></div>
+<div aria-label="Workshop controls" class="lab-tools" role="group">
+<button id="labUndo" type="button">↶ Undo</button>
+<button id="labReset" type="button">↻ Start with 1 whole</button>
+<button id="labExample" type="button">▶ Load 1/2 vs 2/4</button>
+<button id="labThirdsExample" type="button">▶ Try 1/2 vs 3/6</button>
+</div>
+<details class="lab-teacher-guide" id="labTeacherGuide">
+<summary>📘 Teacher guide — show instructions</summary>
+<div class="lab-controls-help">
+<b>✋ Left-drag:</b> <strong>copy from the cutting board</strong> to any comparison or addition row. Elsewhere, dragging moves a block. Drop it <strong>onto another block</strong> to combine.  
+    <b>🖱️ Right-click:</b> on the board choose <strong>Enter fraction…</strong> or <strong>Cut into 2, 3, 4, 6 or 8</strong>. Any block also offers ✨ Simplify with a worked solution.  
+    <b>👆 Double-click:</b> simplify the fraction (e.g. 2/4 → 1/2).<br/>
+<b>📱 On touchscreens:</b> drag with a finger; press and hold a block for the Cut / Simplify menu. You can also tap a block then tap an empty row to move it.
+  </div>
+<div aria-live="polite" class="lab-hint" id="labInstruction">Right-click the blue <strong>1 whole</strong> and choose <strong>Cut into 2</strong> or <strong>Cut into 3</strong>.</div>
+<div aria-label="Learning steps" class="lab-steps" id="labSteps"></div>
+<p class="lab-caption">The cutting board never loses its source when copying. Right-click a placed block to delete it, use the × on larger blocks, or clear the entire comparison/addition row. When A and B both contain fractions, click the comparison symbol (&lt;, &gt; or =) to send copies of both rows to Addition.</p>
+</details>
+<div class="lab-work">
+<div class="lab-row-title"><strong>🪵 Cutting board · Reusable pieces</strong><span class="lab-row-actions"><span class="lab-copy-note">⧉ Dragging makes a copy</span><button type="button" class="lab-reveal" data-zone-answer="work">Show Answer</button></span></div>
+<p class="lab-board-help">Right-click to cut or enter a fraction. Left-drag on empty page space to draw a temporary pointing arrow; dragging a fraction block still moves it.</p>
+<div class="lab-surface lab-board" data-empty="Right-click and cut pieces to make your own fraction source" data-lab-zone="work" id="labWork"></div>
+<div aria-hidden="true" class="lab-board-ruler"><span>0</span><span>Each bar represents 1 whole</span></div>
+
+</div>
+<h3 class="lab-section-title">⚖️ Compare from top to bottom</h3>
+<div class="lab-compare-rows">
+<div class="lab-compare-stack" id="labCompareStack">
+<div class="lab-bay"><div class="lab-bay-label"><strong>A · Top fraction</strong> <span>Choose any fraction</span><button type="button" class="lab-reveal" data-zone-answer="a">Show Answer</button><button class="lab-clear-zone" data-lab-clear="a" title="Remove all blocks from top comparison" type="button">🗑 Clear A</button></div><div class="lab-bay-body"><div class="lab-surface empty" data-empty="Copy 1/2 here from the cutting board" data-lab-zone="a" id="labA"></div></div></div>
+<div class="lab-bay"><div class="lab-bay-label"><strong>B · Bottom fraction</strong> <span>Choose any fraction</span><button type="button" class="lab-reveal" data-zone-answer="b">Show Answer</button><button class="lab-clear-zone" data-lab-clear="b" title="Remove all blocks from bottom comparison" type="button">🗑 Clear B</button></div><div class="lab-bay-body"><div class="lab-surface empty" data-empty="Copy 2/4 here from the cutting board" data-lab-zone="b" id="labB"></div><div aria-hidden="true" class="lab-ruler lab-comparison-ruler"></div></div></div>
+<svg aria-hidden="true" class="lab-compare-guide" id="labCompareGuide"></svg>
+</div>
+<div class="lab-comparison-legend"><span><i class="line-chip" style="background:#176cbd"></i> Top A ends</span><span><i class="line-chip" style="background:#d47412"></i> Bottom B ends</span><span>Matching lines mean equal lengths</span></div>
+<div aria-live="polite" class="lab-compare-verdict" id="labCompareVerdict"><button aria-label="Compare fractions" class="symbol" disabled="" id="labCompareSymbol" title="Click any comparison symbol to copy A + B into Addition" type="button">?</button><div><div class="message" id="labCompareMessage">Put fractions in both rows to compare them.</div><div class="lesson" id="labCompareLesson">The two rulers share the same scale. Watch where each colored bar stops.</div><div class="lab-equal-hint" hidden="" id="labEqualHint">➕ Click the symbol to move copies into Addition.</div><button type="button" class="lab-reveal" id="labCompareAnswer" disabled>Show Comparison Solution</button></div></div>
+<div class="lab-bay lab-addition-bay">
+  <div class="lab-bay-label"><strong>+ · Addition</strong><span>Stack fractions, one whole per bar</span><button class="lab-clear-zone" data-lab-clear="sum" title="Remove all blocks from addition" type="button">Clear Addition</button></div>
+  <div class="lab-bay-body">
+    <p class="lab-sum-intro">Each outlined bar represents one whole. Double-click an improper fraction to separate full wholes and the remainder; double-click a complete fraction again to simplify it to 1.</p>
+    <div class="lab-sum-board" data-lab-zone="sum" id="labSum" aria-label="Addition bars; drag fractions here"></div>
+    <div class="lab-reading" id="labSumRead" aria-live="polite">Drop pieces here to build the addition.</div>
+    <div class="lab-sum-actions"><button class="lab-merge-all" id="labMergeAll" type="button" title="Group all addition blocks into one fraction">Merge blocks</button><button type="button" id="labShowAnswer" disabled title="Reveal the complete addition solution">Show Answer</button></div>
+  </div>
+</div>
+</div>
+<div aria-live="polite" class="lab-feedback" id="labFeedback" role="status">Tip: Right-click the cutting board to enter a fraction, cut pieces, or show a simplification solution.</div>
+<div class="lab-context" hidden="" id="labContextMenu" role="menu">
+<div class="lab-context-title" id="labMenuLabel">Fraction</div>
+<button id="labMenuEnter" role="menuitem" type="button">🔢 Enter fraction…<small>Replace the cutting board with a fraction</small></button>
+<div class="lab-context-title">✂ Cut into equal pieces</div>
+<div aria-label="Number of pieces to cut into" class="lab-cut-choices" id="labCutChoices" role="group"></div>
+<button id="labMenuSimplify" role="menuitem" type="button">✨ Simplify<small>Keep exactly the same length</small></button>
+<button id="labMenuDelete" role="menuitem" type="button">🗑 Delete block<small>Remove this copy from its row</small></button>
+</div>
+</section>
+  <dialog id="labEntryDialog" class="lab-dialog" aria-labelledby="labEntryTitle">
+    <div class="lab-dialog-head"><h3 id="labEntryTitle">🔢 Enter a fraction on the cutting board</h3><button type="button" data-close-dialog="labEntryDialog" aria-label="Close fraction entry">×</button></div>
+    <p>Enter the fraction you want highlighted. The rest of the last whole remains visible without a glow.</p>
+    <form id="labBoardFractionForm">
+      <div class="lab-entry-fields">
+        <label>Numerator (top)<input id="labNumerator" type="number" min="0" max="192" step="1" required inputmode="numeric" value="3"></label>
+        <span class="lab-entry-slash">/</span>
+        <label>Denominator (bottom)<input id="labDenominator" type="number" min="1" max="96" step="1" required inputmode="numeric" value="4"></label>
+      </div>
+      <p class="lab-entry-preview" id="labEntryPreview" aria-live="polite">3/4 = 0.75 of one whole</p>
+      <p class="lab-entry-explain">Example: 3/4 shows a glowing 3/4 and an ordinary 1/4. 5/2 shows two glowing whole bars and a glowing half on the third bar.</p>
+      <div class="lab-dialog-actions"><button type="button" data-close-dialog="labEntryDialog">Cancel</button><button type="submit" class="primary">Show on cutting board</button></div>
+    </form>
+  </dialog>
+  <dialog id="labSolutionDialog" class="lab-dialog" aria-labelledby="labSolutionTitle">
+    <div class="lab-dialog-head"><h3 id="labSolutionTitle">✨ How to simplify</h3><button type="button" data-close-dialog="labSolutionDialog" aria-label="Close solution">×</button></div>
+    <div id="labSolutionBody" aria-live="polite"></div>
+    <div class="lab-dialog-actions"><button type="button" class="primary" data-close-dialog="labSolutionDialog">Got it</button></div>
+  </dialog>
+  <p class="footer">Works completely offline. No internet, account, external libraries or installation required.</p>
+</main>
+<svg id="labArrowLayer" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const gcd = (a,b) => b ? gcd(b,a%b) : a;
+// Workshop: each piece is an exact fraction n/d of the SAME whole.
+// Cutting conserves its value, combining adds, simplifying changes only the label.
+const labEl=$('cutlab');
+// Offline palette: 32 deterministic fraction colors, cycled by denominator.
+// The fraction units for 1/d and n/d share the same color. 1/33 repeats 1/1,
+// 1/34 repeats 1/2, and so on. No on-page legend or backend service is needed.
+const LAB_PALETTE=Array.from({length:32},(_,i)=>{
+  if(i===0)return ['#2f6fcd','#fff'];
+  if(i===1)return ['#159c8a','#fff'];
+  if(i===2)return ['#8660bd','#fff'];
+  if(i===3)return ['#f1a933','#352500'];
+  const hue=Math.round((196+i*137.508)%360);
+  const saturation=62+(i%3)*3;
+  const lightness=[44,53,59,47,55][i%5];
+  return [`hsl(${hue} ${saturation}% ${lightness}%)`,lightness>=55?'#172d40':'#fff'];
+});
+const labColor=d=>LAB_PALETTE[((Math.max(1,Math.trunc(Number(d)||1))-1)%32+32)%32];
+const labAreas=['work','a','b','sum'];
+const labIds={work:'labWork',a:'labA',b:'labB',sum:'labSum'};
+const labInitialMilestones=()=>({cutWhole:false,cutHalf:false,combined:false,compared:false,simplified:false,path:'halves',cutThird:false,combinedThird:false});
+let labBoardEntry=null;
+let labNextId=1,labState={work:[{id:1,n:1,d:1}],a:[],b:[],sum:[]},labSelected=null,labHistory=[],labGesture=null,labFresh=[],labIgnoreClick=false,labMenuId=null,labLongPress=null,labMilestones=labInitialMilestones();
+const labName=z=>({work:'cutting board',a:'comparison A',b:'comparison B',sum:'addition row'})[z];
+const labNew=(n,d,emphasis=null)=>({id:++labNextId,n,d,...(emphasis===null?{}:{emphasis})});
+const labLabel=p=>p.d===1?String(p.n):`${p.n}/${p.d}`;
+const labValue=z=>labState[z].reduce((s,p)=>s+p.n/p.d,0);
+const labCompareValues=(a,b)=>{const x=labCommonParts(labState[a]),y=labCommonParts(labState[b]);return x.n*y.d-y.n*x.d};
+const labEqual=(a,b)=>labCompareValues(a,b)===0;
+const labFraction=(n,d)=>d===1?String(n):`${n}/${d}`;
+const labMixed=({n,d})=>{if(!n)return '0';const g=gcd(n,d);n/=g;d/=g;
+  if(n===d)return '1 whole';if(n%d===0)return `${n/d} wholes`;
+  const whole=Math.floor(n/d);return whole?`${whole} ${n%d}/${d}`:`${n}/${d}`};
+const labSameShadow=`inset 0 3px 0 #ffffff5f,inset -2px 0 0 #081f332b,0 var(--lab-depth) 0 color-mix(in srgb,var(--piece-color) 45%,#183047),0 calc(var(--lab-depth) + 2px) 4px #193d5942`;
+function labOpenSolution(title, html){$('labSolutionTitle').textContent=title;$('labSolutionBody').innerHTML=html;$('labSolutionDialog').showModal()}
+function labFlashEnteredPieces(ms=2300){
+  const until=Date.now()+ms;
+  let flashed=false;
+  for(const p of labState.work){
+    if(p.emphasis===true){p.glowUntil=until; flashed=true;}
+  }
+  if(flashed){labRender();setTimeout(()=>{let changed=false;for(const p of labState.work){if(p.glowUntil && p.glowUntil<=Date.now()){delete p.glowUntil; changed=true;}} if(changed) labRender();}, ms+50)}
+}
+function labCombineExplanation(a,b,sum,lcm){
+  const aN=a.n*(lcm/a.d), bN=b.n*(lcm/b.d), total=aN+bN;
+  const sameDen=a.d===b.d;
+  const simp=gcd(total,lcm);
+  const simpText=simp>1 ? `<p><strong>Simplify if wanted:</strong> ${total}/${lcm} ÷ ${simp}/${simp} = <strong>${labFraction(total/simp,lcm/simp)}</strong>.</p>` : `<p><strong>Simplify if wanted:</strong> ${total}/${lcm} is already in simplest form.</p>`;
+  return `<p>We are combining <strong>${labLabel(a)}</strong> and <strong>${labLabel(b)}</strong>.</p>
+    <div class="lab-solution-step"><span class="num">1</span><span>${sameDen ? `The denominators already match (${a.d}), so we can add the numerators directly.` : `Find a common denominator for ${a.d} and ${b.d}. The least common denominator is <strong>${lcm}</strong>.`}</span></div>
+    ${sameDen ? '' : `<div class="lab-solution-step"><span class="num">2</span><span>Rewrite each fraction with denominator ${lcm}:<br><strong>${labLabel(a)} = ${aN}/${lcm}</strong><br><strong>${labLabel(b)} = ${bN}/${lcm}</strong></span></div>`}
+    <div class="lab-solution-step"><span class="num">${sameDen ? 2 : 3}</span><span>Add the numerators and keep the denominator:<br><strong>${aN}/${lcm} + ${bN}/${lcm} = ${total}/${lcm}</strong></span></div>
+    <div class="lab-solution-formula">${labLabel(a)} + ${labLabel(b)} = ${labLabel(sum)}</div>
+    ${simpText}
+    <p>The combined block keeps the total length of both original pieces.</p>`;
+}
+const LAB_MAX_SUM_WHOLES=32;
+const labZoneLimit=z=>z==='sum'?LAB_MAX_SUM_WHOLES:1;
+const labCutOptions=[2,3,4,6,8];
+const labCutMaxDen=96;
+const labCutMaxTiles=80;
+const labCutParts=(p,k)=>{let n=p.n,d=p.d*k,g=gcd(n,d);return {n:n/g,d:d/g}};
+const labCanCut=(f,k)=>{if(!f)return false;const p=labCutParts(f.p,k);return p.d<=labCutMaxDen&&labState[f.z].length-1+k<=labCutMaxTiles};
+const labCommonParts=pieces=>{
+  const d=pieces.reduce((v,p)=>v*p.d/gcd(v,p.d),1);
+  const n=pieces.reduce((v,p)=>v+p.n*(d/p.d),0);
+  return {n,d};
+};
+const labExpression=z=>labState[z].length?labState[z].map(labLabel).join(' + '):'0';
+const labSumLabel=z=>labState[z].length?labLabel(labCommonParts(labState[z])):'0';
+const labMixedTotal=z=>labMixed(labCommonParts(labState[z]));
+const labFind=id=>{for(const z of labAreas){const i=labState[z].findIndex(p=>p.id===id);if(i>=0)return {z,i,p:labState[z][i]}}return null};
+function labSnapshot(){labHistory.push(JSON.stringify({s:labState,n:labNextId,m:labMilestones,e:labBoardEntry}));if(labHistory.length>100)labHistory.shift()}
+function labUndo(){const prev=labHistory.pop();if(!prev){labFeedback('Nothing to undo yet.');return}const obj=JSON.parse(prev);labState=obj.s;labNextId=obj.n;labMilestones=obj.m;labBoardEntry=obj.e??null;labSelected=null;labFresh=[];labCloseMenu();labRender();labFeedback('Last action undone.')}
+function labFeedback(msg){$('labFeedback').textContent=msg}
+function labPieceHTML(p,scale=1,z='work',original=null){const [col,ink]=labColor(p.d),fresh=labFresh.includes(p.id);
+const deletable=z!=='work',canShowRemove=deletable&&p.n/p.d/scale>=.085;
+const fragmentNote=original&&labLabel(original)!==labLabel(p)?` (part of ${labLabel(original)}; moving it moves the entire block)`:'';
+return `<button type="button" class="lab-piece ${z==='work'&&p.emphasis===true&&Date.now()<(p.glowUntil||0)?'emphasized':z==='work'&&p.emphasis===false?'remainder':''} ${fresh?'pop':''}" style="--piece-width:${100*p.n/p.d/scale}%;--piece-color:${col};--piece-ink:${ink}" data-lab-id="${p.id}" data-d="${p.d}" aria-label="${labLabel(p)}${fragmentNote}. Drag to move, right-click for Cut, Simplify or Delete, or double-click to simplify." title="${labLabel(p)}${fragmentNote} — right-click to cut, simplify or delete"><span class="lab-fraction"><b>${p.n}</b><i>${p.d}</i></span>${p.n>1&&p.d>1&&p.emphasis!==true?'<span class="lab-join-indicator">joined</span>':''}${canShowRemove?`<span class="lab-remove-corner" data-lab-delete="${p.id}" title="Delete ${labLabel(p)} block" aria-hidden="true">×</span>`:''}</button>`;
+}
+function labBoardRows(){
+  const rows=[];let row=[],used=0;
+  for(const p of labState.work){
+    const v=p.n/p.d;
+    // Whole-sized blocks have their own bars, smaller blocks share one ruler.
+    if(row.length&&used+v>1+1e-9){rows.push(row);row=[];used=0}
+    row.push(p);used+=v;
+    if(used>=1-1e-9){rows.push(row);row=[];used=0}
+  }
+  if(row.length||!rows.length)rows.push(row);
+  return rows.map((pieces,i)=>`<div class="lab-board-row" aria-label="Whole bar ${i+1}">${pieces.map(p=>labPieceHTML(p,1,'work')).join('')}</div>`).join('');
+}
+function labSumFragmentHTML(part){
+  const p=part.piece;
+  const [col,ink]=labColor(p.d);
+  const label=part.first?`<span class="lab-fraction"><b>${p.n}</b><i>${p.d}</i></span>`:
+    `<span class="lab-sum-continuation" aria-hidden="true">↪</span>`;
+  const isFresh=labFresh.includes(p.id);
+  const fractionLabel=labLabel(p);
+  // Each physical source block keeps its original value and denominator.
+  // Only the display window is clipped at whole boundaries; no new cuts are created.
+  return `<button type="button" class="lab-piece lab-sum-fragment ${part.first?'sum-fragment-start':'sum-fragment-continued'} ${part.hasMore?'sum-fragment-overflow':''} ${isFresh?'pop':''}"
+    style="--piece-width:${100*part.units/part.denom}%;--piece-color:${col};--piece-ink:${ink}"
+    data-lab-id="${p.id}" data-d="${p.d}"
+    aria-label="${fractionLabel}${part.first?'':' (continued from the previous whole)'}. Drag to move; double-click to separate whole parts or simplify."
+    title="${fractionLabel}${part.first?'':' — continuation of the same block'} — double-click to separate or simplify">${label}</button>`;
+}
+function labSumRows(){
+  const wholeRows=[];
+  let current=[],used=0;
+  const exactDen=labCommonParts(labState.sum).d||1;
+  for(const piece of labState.sum){
+    let remaining=piece.n*(exactDen/piece.d);
+    let first=true;
+    while(remaining>0){
+      const free=exactDen-used;
+      const take=Math.min(free,remaining);
+      current.push({piece,units:take,denom:exactDen,first,hasMore:remaining>take});
+      first=false;
+      remaining-=take;
+      used+=take;
+      if(used===exactDen){wholeRows.push(current);current=[];used=0;}
+    }
+  }
+  if(current.length)wholeRows.push(current);
+  const occupied=wholeRows.length;
+  const compact=occupied<=1?68:occupied===2?63:occupied===3?57:occupied<=5?50:occupied<=8?44:39;
+  const totalRows=occupied+1;
+  let html='';
+  for(let i=0;i<totalRows;i++){
+    const segments=wholeRows[i]||[];
+    const empty=!segments.length;
+    html+=`<div class="lab-sum-row ${empty?'is-empty':''}" style="--sum-row-height:${compact}px" aria-label="Whole ${i+1}${empty?', empty drop row':''}">`;
+    if(!empty)html+=segments.map(labSumFragmentHTML).join('');
+    html+=`<span class="lab-sum-index" aria-hidden="true">Whole ${i+1}</span><span class="lab-sum-boundary" aria-hidden="true"></span></div>`;
+  }
+  return html;
+}
+function labHighlightedValue(){return labState.work.filter(p=>p.emphasis===true).reduce((v,p)=>v+p.n/p.d,0)}
+function labStep(){const ms=labMilestones;return ms.simplified?5:ms.compared?4:ms.combined?3:ms.cutHalf?2:ms.cutWhole?1:0}
+function labCompareGuides(){
+  const svg=$('labCompareGuide'),stack=$('labCompareStack');
+  const a=$('labA').getBoundingClientRect(),b=$('labB').getBoundingClientRect(),r=stack.getBoundingClientRect();
+  if(!r.width||!r.height){svg.innerHTML='';return}
+  const origin=a.left-r.left+3,unit=Math.max(0,a.width-6),va=labValue('a'),vb=labValue('b'),scale=1;
+  const pos=v=>origin+Math.min(1,Math.max(0,v/scale))*unit;
+  const ax=pos(va),bx=pos(vb),ya=a.bottom-r.top-7,yb=b.top-r.top+7;
+  svg.setAttribute('viewBox',`0 0 ${r.width} ${r.height}`);
+  const hasA=labState.a.length>0,hasB=labState.b.length>0;
+  if(!hasA||!hasB){svg.innerHTML='';return}
+  const equal=labEqual('a','b'),height=Math.max(0,yb-ya),dotY1=a.top-r.top+10,dotY2=b.bottom-r.top-10;
+  // Match the end of each bar with a projected line across the gap.
+  const draw=(x,color,yStart,yEnd,dash)=>`<line x1="${x}" y1="${yStart}" x2="${x}" y2="${yEnd}" stroke="${color}" stroke-width="${equal?'4':'3'}" stroke-dasharray="${dash}" opacity=".98"/><circle cx="${x}" cy="${yStart}" r="5.5" fill="${color}" stroke="white" stroke-width="2"/><circle cx="${x}" cy="${yEnd}" r="5.5" fill="${color}" stroke="white" stroke-width="2"/>`;
+  svg.innerHTML=equal
+    ? draw(ax,'#128265',ya,yb,'6 5')
+    : draw(ax,'#176cbd',ya,yb,'6 5')+draw(bx,'#d47412',ya+3,yb-3,'3 5');
+}
+function labRender(){
+  const compareScale=1;
+  $('labCompareStack').dataset.scale=String(compareScale);
+  $('labCompareStack').querySelector('.lab-comparison-ruler').dataset.span=compareScale===1?'1 whole':`${compareScale} wholes`;
+  for(const z of labAreas){
+    const el=$(labIds[z]),pieces=labState[z];
+    if(z==='sum'){
+      el.innerHTML=labSumRows();
+      $('labSumRead').textContent=pieces.length?'Select Show Answer to check your work.':'Drop pieces here to build the addition.';
+      continue;
+    }
+    el.innerHTML=z==='work'?labBoardRows():pieces.map(p=>labPieceHTML(p,1,z)).join('');
+    el.classList.toggle('empty',!pieces.length);
+    const answerButton=labEl.querySelector(`[data-zone-answer="${z}"]`);
+    if(answerButton)answerButton.disabled=pieces.length===0;
+  }
+  const a=labState.a.length,b=labState.b.length,s=labState.sum.length;
+  if(a&&b&&labEqual('a','b'))labMilestones.compared=true;
+  const hasBoth=Boolean(a&&b),symbol=hasBoth?(labEqual('a','b')?'=':labCompareValues('a','b')>0?'>':'<'):'?';
+  $('labCompareSymbol').textContent=symbol;
+  $('labCompareSymbol').disabled=!hasBoth;
+  $('labCompareSymbol').setAttribute('aria-label',hasBoth?`A ${symbol} B. Click to copy both fractions to Addition`:'Add fractions to A and B first');
+  $('labEqualHint').hidden=!hasBoth;
+  $('labMergeAll').disabled=s<2;
+  $('labShowAnswer').disabled=s===0;
+  $('labCompareAnswer').disabled=!hasBoth;
+  $('labCompareVerdict').classList.toggle('equal',symbol==='=');
+  $('labCompareVerdict').classList.toggle('ready',hasBoth&&symbol!=='=');
+  $('labCompareMessage').textContent=hasBoth?'Compare the two colored lengths.':'Put a fraction in the top row and another in the bottom row.';
+  $('labCompareLesson').textContent='Click Show Comparison Solution for an explanation, or click the symbol to stack both rows in Addition.';
+  requestAnimationFrame(labCompareGuides);
+  const path=labMilestones.path;
+  const thirdSteps=['Cut a whole into three 1/3 pieces','Join two 1/3 to make 2/3','Copy 2/3 to top A','Cut 2/3 into four 1/6','Copy four 1/6 to bottom B','Compare 2/3 and 4/6'];
+  const halfSteps=['Cut 1 into 1/2 + 1/2','Cut one 1/2 into quarters','Drop 1/4 onto 1/4 → 2/4','Compare 1/2 and 2/4','Double-click 2/4 → 1/2'];
+  const freeSteps=['Cut a whole into equal pieces','Drag copies to compare','Join pieces to add','Build whole bars in Addition'];
+  const labels=path==='thirds'?thirdSteps:path==='halves'?halfSteps:freeSteps;
+  const thirdStage=!labMilestones.cutThird?0:!labMilestones.combinedThird?1:!labState.a.some(p=>p.n/p.d===2/3)?2:labState.work.filter(p=>p.n===1&&p.d===6).length<4?3:!labState.b.length||!labEqual('a','b')?4:6;
+  const freeStage=!labMilestones.cutWhole?0:!a&&!b?1:!labMilestones.combined?2:!s?3:4;
+  const stage=path==='thirds'?thirdStage:path==='halves'?labStep():freeStage;
+  $('labSteps').innerHTML=labels.map((t,i)=>`<div class="lab-step ${i<stage?'done':i===stage?'current':''}"><b>${i<stage?'✓':i+1+'.'}</b>${t}</div>`).join('');
+  const instructions=[
+    '🖱️ <strong>Right-click the blue whole</strong> and choose <strong>Cut in half</strong> to make two green 1/2 pieces.',
+    '✂ Now <strong>right-click one green 1/2</strong> and cut it into two orange 1/4 pieces.',
+    '✋ <strong>Drag one orange 1/4 directly ONTO the other orange 1/4</strong>. They will join into one orange 2/4 block!',
+    '⚖️ <strong>Drag 1/2 into A</strong> and your <strong>2/4 into B</strong>. Both lengths should match exactly.',
+    '✨ The lengths match! Now <strong>double-click the 2/4 block</strong> to simplify it into 1/2 without changing its size.',
+    '🎉 Well done! <strong>2/4 = 1/2</strong>. Try cutting 1/4 into two 1/8 pieces, then combine them to make 2/8.'
+  ];
+  const thirdInstructions=[
+    '✂ Right-click the blue <strong>1 whole</strong> and choose <strong>Cut into 3</strong>. It becomes three purple 1/3 pieces.',
+    '🧩 Drag one purple <strong>1/3</strong> directly onto another purple <strong>1/3</strong>. They join into a larger <strong>2/3</strong> piece.',
+    '✋ Copy the joined <strong>2/3</strong> from the cutting board into <strong>A (top)</strong>. The original stays on the cutting board.',
+    '✂ Right-click the original <strong>2/3</strong> on the cutting board and choose <strong>Cut into 4</strong>. It makes four red <strong>1/6</strong> pieces.',
+    '✋ Copy the four <strong>1/6</strong> pieces into <strong>B (bottom)</strong>. Together they make <strong>4/6</strong>, the same length as 2/3.',
+    '⚖️ Compare the colored endpoints. Both fractions reach the same line.',
+    '🎉 Correct! <strong>2/3 = 4/6</strong>. Try cutting a half into three pieces to make <strong>3/6 = 1/2</strong>!'
+  ];
+  const freeInstructions=[
+    '✂ Right-click the whole and choose how many equal parts you want: <strong>2, 3, 4, 6 or 8</strong>.',
+    '✋ You can now drag <strong>copies</strong> of any colored pieces into A and B to compare their lengths.',
+    '🧩 Drop a piece on another to <strong>combine</strong> them. Right-click a joined block for more cuts.',
+    '➕ Drop pieces in the <strong>addition row</strong>. Every rounded bar is a separate whole; a new empty bar is ready for the next piece.',
+    '🎉 Keep exploring! Try the fractions 1/3, 2/3 and 3/6 or restart to follow the half-and-quarter lesson.'
+  ];
+  $('labInstruction').innerHTML=path==='thirds'?thirdInstructions[Math.min(stage,6)]:path==='halves'?instructions[Math.min(stage,5)]:freeInstructions[Math.min(stage,4)];
+  document.querySelectorAll('#cutlab .lab-piece').forEach(el=>el.classList.toggle('chosen',Number(el.dataset.labId)===labSelected));
+  labFresh=[];
+}
+function labCut(id,k=2){const f=labFind(id);if(!f)return;
+  if(!labCanCut(f,k)){labFeedback('That would make the pieces too small or too numerous. Try a smaller cut.');return}
+  const p=f.p,newPart=labCutParts(p,k);
+  labSnapshot();const children=Array.from({length:k},()=>labNew(newPart.n,newPart.d,p.emphasis??null));
+  labState[f.z].splice(f.i,1,...children);labFresh=children.map(c=>c.id);labSelected=null;
+  if(p.n===1&&p.d===1){labMilestones.cutWhole=true;labMilestones.path=k===3?'thirds':k===2?'halves':'free';if(k===3)labMilestones.cutThird=true;}
+  if(p.n===1&&p.d===2)labMilestones.cutHalf=true;
+  labRender();labFeedback("Piece cut into equal sections. Select Show Answer to review the fraction.");
+}
+// In Addition, simplifying an improper fraction happens in two visual steps:
+// first separate its complete wholes (8/8) and remainder (3/8), then
+// simplify each 8/8 to 1 using the ordinary GCD calculation.
+function labSeparateImproper(f){
+  const p=f.p;
+  if(f.z!=='sum'||p.n<=p.d)return false;
+  const count=Math.floor(p.n/p.d),rest=p.n%p.d;
+  const pieces=Array.from({length:count},()=>labNew(p.d,p.d));
+  if(rest)pieces.push(labNew(rest,p.d));
+  labSnapshot();
+  labState.sum.splice(f.i,1,...pieces);
+  labFresh=pieces.map(q=>q.id);labSelected=null;
+  labRender();
+  const terms=[...Array(count).fill(`${p.d}/${p.d}`),...(rest?[`${rest}/${p.d}`]:[])];
+  const equation=`${p.n}/${p.d} = ${terms.join(' + ')}`;
+  const restText=rest?` with <strong>${rest}/${p.d}</strong> left over`:' with no remainder';
+  const instruction=rest?
+    `Whole ${count+1} now shows <strong>${rest}/${p.d}</strong>.`:
+    'There is no partial remainder; all the bars are complete wholes.';
+  labFeedback('Separated the improper fraction into whole-sized pieces. Double-click a complete fraction to change it into 1.');
+  labOpenSolution('Separate whole fractions',
+    `<p>Break <strong>${p.n}/${p.d}</strong> into complete wholes and any remainder.</p>
+     <div class="lab-solution-step"><span class="num">1</span><span>Divide the numerator by the denominator: <strong>${p.n} ÷ ${p.d} = ${count}</strong> whole${count===1?'':'s'}${restText}.</span></div>
+     <div class="lab-solution-step"><span class="num">2</span><span>Each whole has <strong>${p.d}/${p.d}</strong>. Display ${count} complete bar${count===1?'':'s'}${rest?` and ${rest}/${p.d} in the next bar`:''}.</span></div>
+     <div class="lab-solution-formula">${equation}</div>
+     <p>${instruction} Double-click any <strong>${p.d}/${p.d}</strong> block to simplify that complete whole into <strong>1</strong>.</p>`);
+  return true;
+}
+function labSimplify(id){const f=labFind(id);if(!f)return;
+  // A fraction like 11/8 may have GCD 1, yet still contains whole bars.
+  // Keep the existing fraction visual until the student requests this step.
+  if(labSeparateImproper(f))return;
+  const p=f.p,g=gcd(p.n,p.d);
+  const n=p.n,d=p.d,before=labLabel(p),resultN=n/g,resultD=d/g,result=labFraction(resultN,resultD);
+  const steps=g>1
+    ? `<div class="lab-solution-step"><span class="num">1</span><span>Find the <strong>greatest common divisor (GCD)</strong> of ${n} and ${d}: <strong>${g}</strong>.</span></div>
+       <div class="lab-solution-step"><span class="num">2</span><span>Divide the numerator and denominator by the <strong>same number (${g})</strong>:<br>${n} ÷ ${g} = <strong>${resultN}</strong><br>${d} ÷ ${g} = <strong>${resultD}</strong>.</span></div>
+       <div class="lab-solution-step"><span class="num">3</span><span>The fraction is now in simplest form. The <strong>size stays exactly the same</strong>.</span></div>`
+    : `<div class="lab-solution-step"><span class="num">1</span><span>Look for a whole number greater than 1 that divides <strong>both ${n} and ${d}</strong>.</span></div>
+       <div class="lab-solution-step"><span class="num">2</span><span>The GCD is <strong>1</strong>, so there is no common factor to cancel. This fraction is <strong>already simplified</strong>.</span></div>`;
+  let mixed='';
+  if(resultN>resultD&&resultD>1){const w=Math.floor(resultN/resultD),r=resultN%resultD;mixed=`<p><strong>As a mixed number:</strong> ${resultN} ÷ ${resultD} = ${w} remainder ${r}, so ${r?`${w} ${r}/${resultD}`:`${w} wholes`}.</p>`}
+  else if(resultN>resultD&&resultD===1)mixed=`<p><strong>As a whole number:</strong> ${resultN} wholes.</p>`;
+  const additionNote=f.z==='sum'&&n===d&&g>1 ? '<p>This bar is now <strong>1 whole</strong>. The other bars and any remaining fraction stay where they were.</p>' : '';
+  const html=`<p>Starting fraction: <strong>${before}</strong></p>${steps}<div class="lab-solution-formula">${before} ${g>1?'→':'='} ${result}</div>${mixed}${additionNote}<p>Dividing the numerator and denominator by the same nonzero number does not change the fraction's value.</p>`;
+  if(g>1){labSnapshot();p.n=resultN;p.d=resultD;labFresh=[p.id];labSelected=null;
+    if(before==='2/4'&&labLabel(p)==='1/2')labMilestones.simplified=true;
+    labRender();labFeedback(`✨ ${before} = ${labLabel(p)}. The worked solution is shown in the popup.`)}
+  else labFeedback(`${before} is already in simplest form. See the explanation in the popup.`);
+  labOpenSolution('✨ How to simplify', html);
+}
+
+function labMove(id,z){const f=labFind(id);if(!f||!labAreas.includes(z)||f.z===z)return;
+  if(z==='work'){labFeedback('The cutting board is your reusable source. Cut or combine its original pieces there; move other blocks between the comparison and addition rows.');return}
+  if(labValue(z)+f.p.n/f.p.d>labZoneLimit(z)+1e-9){labFeedback(z==='sum'?'The addition area supports up to 32 whole bars.':'Comparison rows can hold at most 1 whole, so the lengths stay easy to compare.');return}
+  labSnapshot();const isCopy=f.z==='work';const placed=isCopy?labNew(f.p.n,f.p.d):f.p;
+  if(!isCopy)labState[f.z].splice(f.i,1);
+  labState[z].push(placed);labSelected=null;labFresh=[placed.id];labRender();
+  labFeedback(`${isCopy?'Copied':'Moved'} a block to ${labName(z)}.`)
+}
+function labCombine(dragId,targetId){if(dragId===targetId)return;const from=labFind(dragId),target=labFind(targetId);if(!from||!target)return;
+  if(target.z==='work'&&from.z!=='work'){labFeedback('The cutting board is a source of original pieces. Combine working copies in the comparison or addition rows instead.');return}
+  const lcm=from.p.d*target.p.d/gcd(from.p.d,target.p.d);
+  const n=from.p.n*(lcm/from.p.d)+target.p.n*(lcm/target.p.d);
+  if(target.z==='work'&&n/lcm>1+1e-9){labFeedback('Each cutting-board block fits within one whole. Use Addition to combine amounts larger than a whole.');return}
+  const enteringDifferentZone=from.z!==target.z;
+  if(enteringDifferentZone&&labValue(target.z)+from.p.n/from.p.d>labZoneLimit(target.z)+1e-9){labFeedback(target.z==='sum'?'The addition area supports up to 32 whole bars.':'Comparison rows can hold at most 1 whole.');return}
+  labSnapshot();const sourceLabel=labLabel(from.p),targetLabel=labLabel(target.p);
+  const isCopy=from.z==='work'&&target.z!=='work';
+  // Copies dragged from the cutting board are not removed from their source.
+  if(!isCopy)labState[from.z].splice(from.i,1);
+  const dest=labFind(targetId);if(!dest){labUndo();return}
+  const joined=labNew(n,lcm,dest.z==='work'?(from.p.emphasis===true&&target.p.emphasis===true?true:from.p.emphasis===false&&target.p.emphasis===false?false:null):null);
+  joined.terms=[...(from.p.terms||[{n:from.p.n,d:from.p.d}]),...(target.p.terms||[{n:target.p.n,d:target.p.d}])].map(({n,d})=>({n,d}));
+  labState[dest.z].splice(dest.i,1,joined);
+  labFresh=[joined.id];labSelected=null;
+  if(sourceLabel==='1/4'&&targetLabel==='1/4')labMilestones.combined=true;
+  if(sourceLabel==='1/3'&&targetLabel==='1/3')labMilestones.combinedThird=true;
+  labRender();
+  labFeedback("The blocks were joined. The worked solution is shown in the popup.");
+  labOpenSolution('🧩 How the fractions were combined', labCombineExplanation(from.p,target.p,joined,lcm));
+}
+function labDeleteBlock(id){
+  const f=labFind(id);if(!f)return;
+  if(f.z==='work'){labFeedback('The cutting board is the reusable source. Use Reset to start with a new whole.');return}
+  labSnapshot();const name=labLabel(f.p),z=f.z;
+  labState[z].splice(f.i,1);labSelected=null;labFresh=[];labCloseMenu();labRender();
+  labFeedback(`🗑 Removed ${name} from ${labName(z)}. The cutting board remains unchanged.`);
+}
+function labClearZone(z){
+  if(!['a','b','sum'].includes(z))return;
+  if(!labState[z].length){labFeedback(`${labName(z)} is already empty.`);return}
+  labSnapshot();labState[z]=[];labSelected=null;labFresh=[];labCloseMenu();labRender();
+  labFeedback(`🗑 Cleared ${labName(z)}. You can drag fresh copies from the cutting board.`);
+}
+function labCopyComparisonToSum(){
+  if(!labState.a.length||!labState.b.length)return;
+  const top=labState.a.map(({n,d})=>({n,d})),bottom=labState.b.map(({n,d})=>({n,d}));
+  const total=labValue('a')+labValue('b');
+  if(total>LAB_MAX_SUM_WHOLES+1e-9){labFeedback('The addition area supports up to 32 whole bars.');return}
+  labSnapshot();
+  // Replace the prior addition exercise, not add onto it. The comparison pieces stay put.
+  labState.sum=[...top,...bottom].map(p=>labNew(p.n,p.d));
+  labSelected=null;labFresh=labState.sum.map(p=>p.id);labRender();
+  labFeedback('Copied both comparison rows into Addition. Choose Show Answer to reveal the solution.');
+}
+function labMergeAll(){
+  if(labState.sum.length<2){labFeedback('Add at least two fraction blocks to merge.');return}
+  labSnapshot();const before=labExpression('sum'),sum=labCommonParts(labState.sum),joined=labNew(sum.n,sum.d);
+  joined.terms=labAnswerTerms();
+  labState.sum=[joined];labFresh=[joined.id];labSelected=null;labRender();
+  labFeedback("The Addition pieces are grouped. Choose Show Answer for the complete solution.");
+}
+function labCloseMenu(){const menu=$('labContextMenu');menu.hidden=true;labMenuId=null}
+function labOpenMenu(id,x,y){const f=id===null?null:labFind(id);if(id!==null&&!f)return;labMenuId=id;
+  const menu=$('labContextMenu');$('labMenuLabel').textContent=f?`${labLabel(f.p)} — choose an action`:'Cutting board — choose an action';
+  $('labCutChoices').innerHTML=f?labCutOptions.map(k=>`<button type="button" data-cut-count="${k}" role="menuitem" ${labCanCut(f,k)?'':'disabled'}>✂ Into ${k}</button>`).join(''):'';
+  $('labMenuSimplify').hidden=!f;
+  $('labMenuSimplify').disabled=false;
+  $('labMenuDelete').hidden=!f||f.z==='work';
+  $('labMenuEnter').hidden=Boolean(f&&f.z!=='work');
+  menu.hidden=false;
+  const rect=menu.getBoundingClientRect();
+  menu.style.left=Math.max(8,Math.min(x,innerWidth-rect.width-8))+'px';
+  menu.style.top=Math.max(8,Math.min(y,innerHeight-rect.height-8))+'px';
+}
+$('labCutChoices').addEventListener('click',e=>{const btn=e.target.closest('[data-cut-count]');if(!btn||btn.disabled)return;const id=labMenuId,k=Number(btn.dataset.cutCount);labCloseMenu();if(id!==null)labCut(id,k)});
+$('labMenuSimplify').addEventListener('click',()=>{const id=labMenuId;labCloseMenu();if(id!==null)labSimplify(id)});
+$('labMenuDelete').addEventListener('click',()=>{const id=labMenuId;labCloseMenu();if(id!==null)labDeleteBlock(id)});
+
+function labShowZoneAnswer(z){
+  const pieces=labState[z];if(!pieces.length)return;
+  const entered=z==='work'&&labBoardEntry!==null;
+  const source=entered ?
+    (labBoardEntry.n===0?[{n:0,d:labBoardEntry.d}]:
+      labState.work.filter(p=>p.emphasis===true).map(p=>({n:p.n,d:p.d}))):pieces;
+  const terms=source.length?source:pieces;
+  const exact=labCommonParts(terms);
+  const divisors=terms.map(p=>p.n*(exact.d/p.d));
+  const total=divisors.reduce((a,b)=>a+b,0);
+  const g=gcd(total,exact.d),simple=labFraction(total/g,exact.d/g);
+  const expression=terms.map(labLabel).join(' + ');
+  const title=z==='work'?'Cutting Board':'Fraction '+z.toUpperCase();
+  const steps=`<div class="lab-solution-step"><span class="num">1</span><span>Read each original piece: <strong>${expression}</strong>.</span></div>
+    <div class="lab-solution-step"><span class="num">2</span><span>Use denominator <strong>${exact.d}</strong> and add the numerators: <strong>${divisors.join(' + ')} = ${total}</strong>.</span></div>
+    <div class="lab-solution-step"><span class="num">3</span><span>Divide numerator and denominator by their GCD (${g}) to obtain <strong>${simple}</strong>.</span></div>`;
+  const entryNote=entered?`<p>The entered fraction is <strong>${labBoardEntry.n}/${labBoardEntry.d}</strong>.${labBoardEntry.n%labBoardEntry.d?' The unhighlighted piece completes the last whole; it is not counted in the entered fraction.':''}</p>`:'';
+  labOpenSolution(`Show Answer — ${title}`,
+    `${entryNote}${steps}<div class="lab-solution-formula">${expression} = ${labFraction(total,exact.d)}${g>1?' = '+simple:''}</div>
+     ${total>exact.d?`<p><strong>Mixed number:</strong> ${labMixed({n:total,d:exact.d})}.</p>`:''}`);
+}
+function labShowComparisonAnswer(){
+  if(!labState.a.length||!labState.b.length)return;
+  const a=labCommonParts(labState.a),b=labCommonParts(labState.b);
+  const d=a.d*b.d/gcd(a.d,b.d),na=a.n*(d/a.d),nb=b.n*(d/b.d);
+  const op=na===nb?'=':na>nb?'>':'<';
+  labOpenSolution('Show Comparison — Worked Solution',
+    `<div class="lab-solution-step"><span class="num">1</span><span>Add each row's pieces: A = <strong>${labExpression('a')}</strong> and B = <strong>${labExpression('b')}</strong>.</span></div>
+     <div class="lab-solution-step"><span class="num">2</span><span>Convert to a shared denominator (${d}): <strong>A = ${na}/${d}</strong>, <strong>B = ${nb}/${d}</strong>.</span></div>
+     <div class="lab-solution-step"><span class="num">3</span><span>Compare the numerators: <strong>${na} ${op} ${nb}</strong>.</span></div>
+     <div class="lab-solution-formula">${labFraction(a.n,a.d)} ${op} ${labFraction(b.n,b.d)}</div>`);
+}
+labEl.querySelectorAll('[data-zone-answer]').forEach(btn=>btn.addEventListener('click',()=>labShowZoneAnswer(btn.dataset.zoneAnswer)));
+$('labCompareAnswer').addEventListener('click',labShowComparisonAnswer);
+function labAnswerTerms(){
+  return labState.sum.flatMap(p=>p.terms?.length?p.terms.map(t=>({n:t.n,d:t.d})):[{n:p.n,d:p.d}]);
+}
+function labShowAnswer(){
+  const terms=labAnswerTerms();if(!terms.length)return;
+  const common=labCommonParts(terms);
+  const expanded=terms.map(p=>p.n*(common.d/p.d));
+  const total=expanded.reduce((a,b)=>a+b,0);
+  const g=gcd(total,common.d);
+  const simpleN=total/g,simpleD=common.d/g;
+  const sumText=terms.map(labLabel).join(' + ');
+  const equivalent=terms.map((p,i)=>`${expanded[i]}/${common.d}`).join(' + ');
+  const mixed=total>common.d && simpleD!==1 ? labMixed({n:simpleN,d:simpleD}) : null;
+  const steps=terms.length>1 ?
+   `<div class="lab-solution-step"><span class="num">1</span><span>Find the least common denominator of ${terms.map(t=>t.d).join(', ')}: <strong>${common.d}</strong>.</span></div>
+    <div class="lab-solution-step"><span class="num">2</span><span>Rewrite each fraction using that denominator:<br><strong>${equivalent}</strong></span></div>
+    <div class="lab-solution-step"><span class="num">3</span><span>Add the numerators: <strong>${expanded.join(' + ')} = ${total}</strong>. Keep the denominator ${common.d}, giving <strong>${total}/${common.d}</strong>.</span></div>`:
+   `<div class="lab-solution-step"><span class="num">1</span><span>Start with the fraction <strong>${sumText}</strong>.</span></div>`;
+  const simplify=g>1 ? `Find GCD(${total}, ${common.d}) = <strong>${g}</strong>. Divide numerator and denominator by ${g}: <strong>${total} / ${g} = ${simpleN}</strong> and <strong>${common.d} / ${g} = ${simpleD}</strong>.`:
+    `The GCD is 1, so the result is already in simplest form.`;
+  const html=`<p><strong>Starting expression:</strong> ${sumText}</p>${steps}
+    <div class="lab-solution-step"><span class="num">${terms.length>1?'4':'2'}</span><span>${simplify}</span></div>
+    ${mixed?`<div class="lab-solution-step"><span class="num">${terms.length>1?'5':'3'}</span><span>Convert the improper fraction to a mixed number: ${simpleN} ÷ ${simpleD} = ${Math.floor(simpleN/simpleD)} remainder ${simpleN%simpleD}. Therefore, <strong>${mixed}</strong>.</span></div>`:''}
+    <div class="lab-solution-formula">${sumText} = ${labFraction(total,common.d)}${g>1?' = '+labFraction(simpleN,simpleD):''}${mixed?' = '+mixed:''}</div>
+    <p>Each rounded bar in Addition represents one whole. The separated bars visualize the final amount.</p>`;
+  labOpenSolution('Show Answer - Complete Solution',html);
+}
+$('labCompareSymbol').addEventListener('click',labCopyComparisonToSum);
+$('labShowAnswer').addEventListener('click',labShowAnswer);
+$('labMergeAll').addEventListener('click',labMergeAll);
+labEl.querySelectorAll('[data-lab-clear]').forEach(button=>button.addEventListener('click',()=>labClearZone(button.dataset.labClear)));
+labEl.addEventListener('contextmenu',e=>{const el=e.target.closest('[data-lab-id]');if(el){e.preventDefault();labOpenMenu(Number(el.dataset.labId),e.clientX,e.clientY)}else if(e.target.closest('#labWork')){e.preventDefault();labOpenMenu(null,e.clientX,e.clientY)}});
+labEl.addEventListener('dblclick',e=>{const el=e.target.closest('[data-lab-id]');if(!el)return;e.preventDefault();labCloseMenu();labSimplify(Number(el.dataset.labId))});
+labEl.addEventListener('click',e=>{
+  if(e.target.closest('#labContextMenu'))return;
+  const remove=e.target.closest('[data-lab-delete]');
+  if(remove){labDeleteBlock(Number(remove.dataset.labDelete));return}
+  if(labIgnoreClick){labIgnoreClick=false;return}
+  const piece=e.target.closest('[data-lab-id]');
+  if(piece){labSelected=Number(piece.dataset.labId);labEl.querySelectorAll('.lab-piece').forEach(el=>el.classList.toggle('chosen',Number(el.dataset.labId)===labSelected));return}
+  const zone=e.target.closest('[data-lab-zone]');if(zone&&labSelected!==null){const id=labSelected;labSelected=null;labMove(id,zone.dataset.labZone)}
+});
+document.addEventListener('pointerdown',e=>{if(!$('labContextMenu').hidden&&!e.target.closest('#labContextMenu'))labCloseMenu()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){labCloseMenu();labSelected=null;labEl.querySelectorAll('.lab-piece').forEach(el=>el.classList.remove('chosen'))}
+  if((e.key==='Delete'||e.key==='Backspace')&&labSelected!==null&&!e.target.closest('input,textarea,select,[contenteditable]')){e.preventDefault();labDeleteBlock(labSelected)}
+});
+$('labUndo').onclick=labUndo;
+$('labReset').onclick=()=>{labNextId=1;labState={work:[{id:1,n:1,d:1}],a:[],b:[],sum:[]};labHistory=[];labMilestones=labInitialMilestones();labBoardEntry=null;labSelected=null;labCloseMenu();labRender();labFeedback('Start with 1 whole. Right-click it and choose Cut into 2, 3, 4, 6 or 8.')};
+$('labExample').onclick=()=>{labSnapshot();labState={work:[labNew(1,2),labNew(1,4),labNew(1,4)],a:[labNew(1,2)],b:[labNew(2,4)],sum:[]};labMilestones={...labInitialMilestones(),cutWhole:true,cutHalf:true,combined:true,compared:true};labBoardEntry=null;labSelected=null;labRender();labFeedback('Example loaded. Compare the two bars or choose Show Comparison Solution.')};
+$('labThirdsExample').onclick=()=>{labSnapshot();labState={work:[labNew(1,2),labNew(1,6),labNew(1,6),labNew(1,6)],a:[labNew(1,2)],b:[labNew(3,6)],sum:[]};labMilestones={...labInitialMilestones(),cutWhole:true,cutHalf:true,combined:true,compared:true};labBoardEntry=null;labSelected=null;labRender();labFeedback('Example loaded. Compare the two bars or choose Show Comparison Solution.')};
+function labHoverTarget(x,y,sourceId){const at=document.elementFromPoint(x,y);const el=at&&at.closest('[data-lab-id]');
+  if(el&&el.closest('#cutlab')){const id=Number(el.dataset.labId);if(id!==sourceId)return {piece:id,zone:null}}
+  for(const z of labAreas){const rect=$(labIds[z]).getBoundingClientRect();if(x>=rect.left&&x<=rect.right&&y>=rect.top&&y<=rect.bottom)return {piece:null,zone:z}}
+  return {piece:null,zone:null};
+}
+function labUnhighlight(){labEl.querySelectorAll('.lab-piece.drop-target').forEach(el=>el.classList.remove('drop-target'));labAreas.forEach(z=>$(labIds[z]).classList.remove('over'))}
+function labCancelLongPress(){if(labLongPress){clearTimeout(labLongPress);labLongPress=null}}
+labEl.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse'&&e.button!==0)return;
+  if(e.target.closest('[data-lab-delete]'))return;
+  const el=e.target.closest('[data-lab-id]');if(!el||e.target.closest('#labContextMenu'))return;
+  const f=labFind(Number(el.dataset.labId));if(!f)return;
+  labCloseMenu();labGesture={id:f.p.id,from:f.z,pointer:e.pointerId,x:e.clientX,y:e.clientY,active:false,hold:false,ghost:null,piece:f.p,el};
+  if(e.pointerType==='touch'){
+    labCancelLongPress();
+    const gesture=labGesture;
+    labLongPress=setTimeout(()=>{if(labGesture===gesture&&!gesture.active){gesture.hold=true;labOpenMenu(gesture.id,gesture.x,gesture.y);labIgnoreClick=true;setTimeout(()=>labIgnoreClick=false,350)}},580);
+  }
+  el.setPointerCapture(e.pointerId);
+});
+document.addEventListener('pointermove',e=>{
+  const g=labGesture;if(!g||e.pointerId!==g.pointer||g.hold)return;
+  const dist=Math.hypot(e.clientX-g.x,e.clientY-g.y);
+  if(dist>10)labCancelLongPress();
+  if(!g.active&&dist<8)return;
+  if(!g.active){g.active=true;const ghost=document.createElement('div');ghost.className='lab-ghost';ghost.textContent=labLabel(g.piece);const [color,ink]=labColor(g.piece.d);ghost.style.setProperty('--piece-color',color);ghost.style.setProperty('--piece-ink',ink);document.body.appendChild(ghost);g.ghost=ghost}
+  g.ghost.style.left=e.clientX+'px';g.ghost.style.top=e.clientY+'px';
+  labUnhighlight();const target=labHoverTarget(e.clientX,e.clientY,g.id);
+  if(target.piece){labEl.querySelector(`[data-lab-id="${target.piece}"]`)?.classList.add('drop-target')}
+  else if(target.zone&&target.zone!==g.from)$(labIds[target.zone]).classList.add('over');
+});
+function labEndDrag(e){const g=labGesture;if(!g||e.pointerId!==g.pointer)return;
+  labGesture=null;labCancelLongPress();if(g.ghost)g.ghost.remove();labUnhighlight();
+  if(g.hold){labIgnoreClick=true;setTimeout(()=>labIgnoreClick=false,350);return}
+  if(g.active){const target=labHoverTarget(e.clientX,e.clientY,g.id);
+    if(target.piece)labCombine(g.id,target.piece);
+    else if(target.zone&&target.zone!==g.from)labMove(g.id,target.zone);
+    labIgnoreClick=true;setTimeout(()=>labIgnoreClick=false,260);
+  }
+}
+document.addEventListener('pointerup',labEndDrag);
+document.addEventListener('pointercancel',labEndDrag);
+window.addEventListener('resize',()=>requestAnimationFrame(labCompareGuides));
+labRender();
+
+// Direct entry belongs to the existing cutting board, not to a separate workspace.
+function labOpenEntry(){
+  const n=labBoardEntry?.n??3,d=labBoardEntry?.d??4;
+  $('labNumerator').value=n;$('labDenominator').value=d;
+  labEntryPreview();$('labEntryDialog').showModal();$('labNumerator').focus();$('labNumerator').select();
+}
+function labEntryPreview(){
+  const rawN=$('labNumerator').value,rawD=$('labDenominator').value,n=Number(rawN),d=Number(rawD);
+  const valid=rawN!==''&&rawD!==''&&Number.isSafeInteger(n)&&Number.isSafeInteger(d)&&n>=0&&n<=192&&d>=1&&d<=96&&n<=12*d;
+  const preview=$('labEntryPreview');preview.classList.toggle('invalid',!valid);
+  preview.textContent=valid?`${n}/${d} = ${Number((n/d).toFixed(5))} wholes = ${(100*n/d).toFixed(2).replace(/\.?0+$/,'')}% of a whole · ${labMixed({n,d})}`
+    :'Enter numerator 0–192, denominator 1–96, with a maximum of 12 wholes.';
+  return valid;
+}
+function labShowBoardFraction(e){
+  e.preventDefault();
+  if(!labEntryPreview())return;
+  const n=Number($('labNumerator').value),d=Number($('labDenominator').value);
+  labSnapshot();
+  const wholeCount=Math.floor(n/d),remainder=n%d,pieces=[];
+  for(let i=0;i<wholeCount;i++)pieces.push(labNew(1,1,true));
+  if(remainder)pieces.push(labNew(remainder,d,true));
+  // Complete the last whole with an unhighlighted block (e.g. 3/4 + 1/4).
+  if(remainder)pieces.push(labNew(d-remainder,d,false));
+  if(n===0)pieces.push(labNew(1,1,false));
+  labState.work=pieces;
+  labBoardEntry={n,d};
+  labMilestones={...labInitialMilestones(),cutWhole:true,path:'free'};
+  labFresh=pieces.filter(p=>p.emphasis).map(p=>p.id);labSelected=null;
+  $('labEntryDialog').close();labCloseMenu();labRender();
+  labFlashEnteredPieces();
+  labFeedback("Your fraction is on the cutting board. Select Show Answer to see its value and explanation.");
+}
+$('labMenuEnter').addEventListener('click',()=>{labCloseMenu();labOpenEntry()});
+$('labBoardFractionForm').addEventListener('submit',labShowBoardFraction);
+['labNumerator','labDenominator'].forEach(id=>$(id).addEventListener('input',labEntryPreview));
+document.querySelectorAll('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>$(button.dataset.closeDialog).close()));
+for(const id of ['labEntryDialog','labSolutionDialog']){
+  $(id).addEventListener('click',e=>{if(e.target===$(id))$(id).close()});
+}
+
+
+// Always-on presentation pointer. A left-drag on noninteractive background
+// creates an arrow; a drag starting on a fraction block remains a block drag.
+// Holding the mouse button keeps the arrow; only release starts its timer.
+document.addEventListener('selectstart',event=>{
+  if(!event.target.closest('input,textarea,[contenteditable]'))event.preventDefault();
+});
+document.addEventListener('dragstart',event=>{
+  if(!event.target.closest('input,textarea,[contenteditable]'))event.preventDefault();
+});
+const arrowLayer=$('labArrowLayer');
+const ARROW_NS='http://www.w3.org/2000/svg';
+const ARROW_LINGER_MS=3000;
+let arrowDrag=null, arrowSequence=0, arrowSuppressClickUntil=0;
+const arrowMake=(tag,cls)=>{
+  const node=document.createElementNS(ARROW_NS,tag);
+  if(cls)node.setAttribute('class',cls);
+  return node;
+};
+function arrowIgnores(target){
+  if(!target||!target.closest)return true;
+  // Leave controls and all fraction blocks untouched, including their children.
+  return Boolean(target.closest('[data-lab-id], .lab-piece, dialog, #labContextMenu, button, input, select, textarea, label, summary, a, [contenteditable], [role="button"], [role="menu"], [role="menuitem"]'));
+}
+function arrowStart(event){
+  if(arrowDrag||event.button!==0||event.isPrimary===false||arrowIgnores(event.target))return;
+  // Touch gestures on blank space should continue to scroll the page normally.
+  if(event.pointerType==='touch')return;
+  const group=arrowMake('g','lab-point-arrow');
+  const outline=arrowMake('line','arrow-outline');
+  const shaft=arrowMake('line','arrow-shaft');
+  const head=arrowMake('polygon','arrow-head');
+  group.append(outline,shaft,head);
+  arrowLayer.appendChild(group);
+  arrowDrag={id:++arrowSequence,pointerId:event.pointerId,startX:event.clientX,startY:event.clientY,lastX:event.clientX,lastY:event.clientY,group,outline,shaft,head,moved:false};
+  arrowLayer.setAttribute('viewBox',`0 0 ${window.innerWidth} ${window.innerHeight}`);
+  arrowDraw(arrowDrag,event.clientX,event.clientY);
+}
+function arrowDraw(a,x,y){
+  a.lastX=x;a.lastY=y;
+  const dx=x-a.startX,dy=y-a.startY,length=Math.hypot(dx,dy);
+  if(length>10)a.moved=true;
+  if(length<2){a.group.style.visibility='hidden';return;}
+  a.group.style.visibility='visible';
+  const ux=dx/length,uy=dy/length;
+  const headLength=Math.min(21,Math.max(11,length*.24));
+  const headWidth=Math.min(11,headLength*.53);
+  const baseX=x-ux*headLength,baseY=y-uy*headLength;
+  const leftX=baseX-uy*headWidth,leftY=baseY+ux*headWidth;
+  const rightX=baseX+uy*headWidth,rightY=baseY-ux*headWidth;
+  const shaftEndX=x-ux*headLength*.62,shaftEndY=y-uy*headLength*.62;
+  for(const line of [a.outline,a.shaft]){
+    line.setAttribute('x1',a.startX);
+    line.setAttribute('y1',a.startY);
+    line.setAttribute('x2',shaftEndX);
+    line.setAttribute('y2',shaftEndY);
+  }
+  a.head.setAttribute('points',`${x},${y} ${leftX},${leftY} ${rightX},${rightY}`);
+}
+function arrowMove(event){
+  if(!arrowDrag||event.pointerId!==arrowDrag.pointerId)return;
+  if(!arrowDrag.moved && Math.hypot(event.clientX-arrowDrag.startX,event.clientY-arrowDrag.startY)<10)return;
+  event.preventDefault();
+  document.body.classList.add('lab-arrow-drawing');
+  arrowDraw(arrowDrag,event.clientX,event.clientY);
+}
+function arrowFinish(x,y){
+  if(!arrowDrag)return;
+  const a=arrowDrag;
+  arrowDrag=null;
+  document.body.classList.remove('lab-arrow-drawing');
+  arrowDraw(a,x,y);
+  if(!a.moved){a.group.remove();return;}
+  // Prevent the drag from activating a blank comparison row on mouse-up.
+  arrowSuppressClickUntil=performance.now()+240;
+  // Timer starts on release, not during the held drag.
+  window.setTimeout(()=>{
+    a.group.classList.add('fading');
+    window.setTimeout(()=>a.group.remove(),500);
+  },ARROW_LINGER_MS);
+}
+function arrowEnd(event){
+  if(!arrowDrag||event.pointerId!==arrowDrag.pointerId)return;
+  if(arrowDrag.moved){event.preventDefault();}
+  arrowFinish(event.clientX,event.clientY);
+}
+// Capture listeners detect the initial target without interfering with block controls.
+document.addEventListener('pointerdown',arrowStart,true);
+document.addEventListener('pointermove',arrowMove,true);
+document.addEventListener('pointerup',arrowEnd,true);
+document.addEventListener('pointercancel',arrowEnd,true);
+document.addEventListener('click',e=>{
+  if(performance.now()<arrowSuppressClickUntil){
+    e.preventDefault();e.stopImmediatePropagation();arrowSuppressClickUntil=0;
+  }
+},true);
+window.addEventListener('blur',()=>{if(arrowDrag)arrowFinish(arrowDrag.lastX,arrowDrag.lastY)});
+
+</script>
+</body>
+</html>
