@@ -3,9 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Teaching Fractions — Cut a Whole | Interactive Fraction Lab</title>
-<meta name="description" content="An interactive, offline-ready fraction teaching tool. Cut and compare visual fraction blocks, combine pieces, explore mixed numbers, and reveal worked solutions.">
+<title>Teaching Fractions — Free Interactive Fraction Visualizer for Kids</title>
+<meta name="description" content="Free interactive fraction visualizer for parents and teachers. Cut, compare, add, and simplify fraction blocks, explore mixed numbers, and reveal step-by-step solutions.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://zaqxen.github.io/teaching-fractions/">
 <meta name="theme-color" content="#0a658f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Teaching Fractions — Free Interactive Fraction Visualizer for Kids">
+<meta property="og:description" content="A free hands-on fraction learning tool for children, parents, and teachers. Cut, compare, combine, and simplify fractions with visual blocks and worked solutions.">
+<meta property="og:url" content="https://zaqxen.github.io/teaching-fractions/">
+<meta property="og:site_name" content="Teaching Fractions">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Teaching Fractions — Cut a Whole",
+  "url": "https://zaqxen.github.io/teaching-fractions/",
+  "description": "Free interactive fraction learning tool for children, parents, teachers, and homeschoolers. Practice cutting a whole, equivalent fractions, comparing and adding fractions, simplifying fractions, improper fractions, and mixed numbers.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "offers": {"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "audience": {"@type":"EducationalAudience","educationalRole":"student"}
+}</script>
 <style>
 
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#183047;background:#f4f8fc;--blue:#147dba;--teal:#0c9b8b;--line:#d8e5f0}*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(120deg,#0a658f,#167d9e);color:white;padding:22px max(18px,calc((100vw - 1100px)/2))}h1{margin:0;font-size:clamp(25px,4vw,37px)}header p{margin:5px 0 0;color:#e0f6ff}.shell{max-width:1100px;margin:auto;padding:22px 16px 40px}.tabs{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}button,select,input{font:inherit}button{cursor:pointer;border:1px solid #aac9df;border-radius:10px;background:white;color:#17415c;padding:10px 14px;font-weight:650}button:hover{background:#e6f4ff}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f5aa28;outline-offset:2px}.tabs button.active,.primary{background:#087cb1!important;color:white!important;border-color:#087cb1!important}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:clamp(15px,3vw,27px);box-shadow:0 5px 20px #17394e0a;margin-bottom:18px}.hidden{display:none}h2{margin:0 0 9px;font-size:23px}h3{margin:16px 0 9px}.muted{color:#52677a}.controls{display:flex;gap:15px;flex-wrap:wrap;align-items:end;margin:20px 0}.controls label{display:flex;flex-direction:column;gap:5px;font-weight:650}select,input[type=number]{border:1px solid #9eb7c8;border-radius:9px;padding:9px;background:white;color:#17394e;min-width:88px}.frac{display:inline-grid;grid-template-rows:1fr 1fr;vertical-align:middle;text-align:center;line-height:1.1;font-size:1.4em;min-width:28px}.frac .top{border-bottom:2px solid currentColor;padding:0 5px 3px}.frac .bottom{padding:3px 5px 0}.equation{font-size:clamp(20px,3vw,30px);display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0}.barrow{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:center;margin:12px 0}.bar{display:flex;height:54px;border:2px solid #41738b;border-radius:7px;overflow:hidden;max-width:760px;background:#eaf1f5}.piece{flex:1;min-width:0;border-right:1px solid #86a7b7;position:relative;display:grid;place-items:center;font-size:13px;font-weight:700;color:#1b4658}.piece:last-child{border-right:0}.piece.filled{background:#4fc1b2;color:#073d3b}.piece.filled.alt{background:#f6bd50;color:#523b0f}.bar.clickable .piece{cursor:pointer}.bar.clickable .piece:hover{filter:brightness(.93)}.explain{background:#edf8f9;border-left:4px solid #0a9d92;padding:12px 16px;border-radius:6px;margin-top:15px;line-height:1.65}.step{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #e5edf4}.step .n{border-radius:50%;background:#d9effb;color:#125b83;width:32px;height:32px;display:grid;place-items:center;flex:none;font-weight:800}.step p{margin:3px 0 0}.actions{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}.feedback{font-weight:700;min-height:27px;padding-top:7px}.good{color:#087650}.bad{color:#b04724}.question-card{border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}.question-card .equation{margin:8px 0}.answers{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.answers select{min-width:80px}.score{font-weight:800;font-size:20px;margin:15px 0}.hint{background:#fff8e9;padding:11px;border-radius:8px;margin-top:10px}.footer{color:#536c7c;font-size:13px;margin-top:20px}.fraction-legend{font-size:12px;color:#536c7c}.note{font-size:14px}.mode-choices{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.mode-choices label{background:#f0f6fb;padding:9px 12px;border-radius:9px}input[type=radio]{accent-color:#087cb1}input[type=range]{width:100%;max-width:400px;accent-color:#087cb1}@media(max-width:540px){.barrow{grid-template-columns:53px 1fr;gap:7px}.bar{height:45px}.piece{font-size:10px}.shell{padding:14px 10px}.panel{padding:15px}.tabs button{flex:1}.equation{gap:7px}}
@@ -297,6 +318,81 @@ body.lab-arrow-drawing{cursor:crosshair}
 #cutlab .lab-sum-row .lab-piece:hover{z-index:3}
 @media(max-width:600px){#cutlab .lab-bay-label .lab-reveal{margin-left:0}}
 
+
+/* Tablet and phone usability: all primary tools remain available without a mouse. */
+#cutlab .lab-piece, #cutlab .lab-sum-fragment{touch-action:none;-webkit-touch-callout:none}
+#cutlab .lab-board-row{touch-action:pan-y}
+#cutlab .lab-context{overscroll-behavior:contain}
+#cutlab .lab-context button{min-height:43px}
+/* Keep the held touch from clicking a menu item underneath the finger on release. */
+#cutlab .lab-context.lab-menu-await-release{pointer-events:none}
+#cutlab .lab-tools button, #cutlab .lab-reveal{white-space:normal}
+#labSolutionBody{overflow-wrap:break-word}
+/* Stacked numerator and denominator in every worked solution popup. */
+#labSolutionBody .lab-vertical-fraction{
+  display:inline-grid;grid-template-rows:auto auto;justify-items:center;align-items:center;
+  vertical-align:middle;min-width:1.2em;margin:0 .12em;line-height:1.06;
+  font-variant-numeric:tabular-nums;font-weight:750;white-space:nowrap;
+}
+#labSolutionBody .lab-vertical-fraction .lab-numerator{display:block;width:100%;text-align:center;border-bottom:2px solid currentColor;padding:0 .16em .11em}
+#labSolutionBody .lab-vertical-fraction .lab-denominator{display:block;text-align:center;padding:.1em .16em 0}
+#labSolutionBody .lab-solution-formula{line-height:1.65;overflow-x:auto;overflow-y:hidden;white-space:normal}
+#labSolutionBody .lab-solution-step{align-items:center}
+#labSolutionBody .lab-solution-step .num{align-self:flex-start}
+@media (max-width:900px){
+  #cutlab .lab-tools{gap:8px}
+  #cutlab .lab-board-row{height:67px;min-height:67px}
+  #cutlab .lab-work{padding:14px}
+  #cutlab .lab-bay-label{gap:7px;align-items:center}
+}
+@media (max-width:600px){
+  header{padding:16px 15px}
+  header h1{font-size:clamp(24px,6vw,30px)}
+  header p{font-size:12px;line-height:1.45}
+  .shell{padding:12px 9px 26px}
+  .panel{padding:13px 11px;border-radius:12px}
+  #cutlab .lab-head h2{font-size:clamp(18px,5.1vw,23px)}
+  #cutlab .lab-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+  #cutlab .lab-tools button{min-width:0;padding:9px 7px;font-size:12px;min-height:44px}
+  #cutlab .lab-work{padding:11px 9px}
+  #cutlab .lab-row-title{align-items:flex-start;gap:7px}
+  #cutlab .lab-row-actions{gap:6px}
+  #cutlab .lab-copy-note{font-size:11px}
+  #cutlab .lab-board-help{font-size:12px;line-height:1.5}
+  #cutlab .lab-board-row{height:61px;min-height:61px}
+  #cutlab .lab-piece .lab-fraction{font-size:clamp(10px,2.9vw,15px)}
+  #cutlab .lab-piece[data-d="16"] .lab-fraction,#cutlab .lab-piece[data-d="32"] .lab-fraction{font-size:9px}
+  #cutlab .lab-compare-stack .lab-surface{height:76px}
+  #cutlab .lab-compare-verdict{align-items:flex-start}
+  #cutlab .lab-compare-verdict .symbol{flex:none}
+  #cutlab .lab-bay-label{align-items:flex-start}
+  #cutlab .lab-bay-label .lab-reveal{margin-left:0}
+  #cutlab .lab-sum-index{font-size:10px}
+  #cutlab .lab-sum-row{min-height:42px}
+  #cutlab .lab-sum-fragment .lab-fraction{font-size:clamp(9px,2.6vw,13px)}
+  .lab-dialog{width:calc(100vw - 18px);max-height:calc(100dvh - 18px);padding:14px;border-radius:14px}
+  .lab-dialog-head h3{font-size:19px;line-height:1.3}
+  .lab-dialog-actions button{min-height:44px}
+  #labSolutionBody .lab-solution-step{gap:8px;margin:9px 0;padding:10px 9px;font-size:13px;line-height:1.65}
+  #labSolutionBody .lab-solution-step .num{width:26px;height:26px}
+  #labSolutionBody .lab-solution-formula{font-size:clamp(17px,4.8vw,23px);padding:13px 8px}
+  .lab-entry-fields{gap:7px;flex-wrap:nowrap;align-items:flex-end}
+  .lab-entry-fields label{flex:1;min-width:0}
+  .lab-entry-fields input{width:100%;min-width:0;font-size:17px}
+  .lab-entry-slash{font-size:22px;padding-bottom:9px}
+}
+@media (max-width:390px){
+  #cutlab .lab-bay-label .lab-clear-zone{font-size:11px;padding:7px 8px}
+  #cutlab .lab-sum-actions{justify-content:stretch}
+  #cutlab .lab-sum-actions button{flex:1}
+  .lab-dialog-head h3{font-size:17px}
+}
+@media (hover:none) and (pointer:coarse){
+  #cutlab .lab-clear-zone,#cutlab .lab-reveal,#cutlab .lab-sum-actions button{min-height:42px}
+  #cutlab .lab-context button{min-height:48px}
+  #cutlab .lab-piece:hover{transform:none}
+}
+
 </style>
 </head>
 <body>
@@ -319,16 +415,16 @@ body.lab-arrow-drawing{cursor:crosshair}
 <b>✋ Left-drag:</b> <strong>copy from the cutting board</strong> to any comparison or addition row. Elsewhere, dragging moves a block. Drop it <strong>onto another block</strong> to combine.  
     <b>🖱️ Right-click:</b> on the board choose <strong>Enter fraction…</strong> or <strong>Cut into 2, 3, 4, 6 or 8</strong>. Any block also offers ✨ Simplify with a worked solution.  
     <b>👆 Double-click:</b> simplify the fraction (e.g. 2/4 → 1/2).<br/>
-<b>📱 On touchscreens:</b> drag with a finger; press and hold a block for the Cut / Simplify menu. You can also tap a block then tap an empty row to move it.
+<b>📱 On phones and tablets:</b> press and hold a block to open Cut / Simplify, or hold an empty cutting-board area to enter a fraction. Drag blocks with a finger; double-tap a block to simplify it. Tap a block, then tap an empty row to move it.
   </div>
 <div aria-live="polite" class="lab-hint" id="labInstruction">Right-click the blue <strong>1 whole</strong> and choose <strong>Cut into 2</strong> or <strong>Cut into 3</strong>.</div>
 <div aria-label="Learning steps" class="lab-steps" id="labSteps"></div>
-<p class="lab-caption">The cutting board never loses its source when copying. Right-click a placed block to delete it, use the × on larger blocks, or clear the entire comparison/addition row. When A and B both contain fractions, click the comparison symbol (&lt;, &gt; or =) to send copies of both rows to Addition.</p>
+<p class="lab-caption">The cutting board never loses its source when copying. Right-click or press and hold a placed block to delete it, use the × on larger blocks, or clear the entire comparison/addition row. When A and B both contain fractions, click the comparison symbol (&lt;, &gt; or =) to send copies of both rows to Addition.</p>
 </details>
 <div class="lab-work">
 <div class="lab-row-title"><strong>🪵 Cutting board · Reusable pieces</strong><span class="lab-row-actions"><span class="lab-copy-note">⧉ Dragging makes a copy</span><button type="button" class="lab-reveal" data-zone-answer="work">Show Answer</button></span></div>
-<p class="lab-board-help">Right-click to cut or enter a fraction. Left-drag on empty page space to draw a temporary pointing arrow; dragging a fraction block still moves it.</p>
-<div class="lab-surface lab-board" data-empty="Right-click and cut pieces to make your own fraction source" data-lab-zone="work" id="labWork"></div>
+<p class="lab-board-help">Right-click or touch and hold the cutting board to cut or enter a fraction. Drag blocks with a mouse or finger; on desktop, drag empty page space to draw a temporary pointing arrow.</p>
+<div class="lab-surface lab-board" data-empty="Right-click or touch and hold to enter or cut a fraction" data-lab-zone="work" id="labWork"></div>
 <div aria-hidden="true" class="lab-board-ruler"><span>0</span><span>Each bar represents 1 whole</span></div>
 
 </div>
@@ -351,7 +447,7 @@ body.lab-arrow-drawing{cursor:crosshair}
   </div>
 </div>
 </div>
-<div aria-live="polite" class="lab-feedback" id="labFeedback" role="status">Tip: Right-click the cutting board to enter a fraction, cut pieces, or show a simplification solution.</div>
+<div aria-live="polite" class="lab-feedback" id="labFeedback" role="status">Tip: Right-click or touch and hold the cutting board to enter or cut fractions. Double-tap a block on touchscreens to simplify.</div>
 <div class="lab-context" hidden="" id="labContextMenu" role="menu">
 <div class="lab-context-title" id="labMenuLabel">Fraction</div>
 <button id="labMenuEnter" role="menuitem" type="button">🔢 Enter fraction…<small>Replace the cutting board with a fraction</small></button>
@@ -408,7 +504,7 @@ const labAreas=['work','a','b','sum'];
 const labIds={work:'labWork',a:'labA',b:'labB',sum:'labSum'};
 const labInitialMilestones=()=>({cutWhole:false,cutHalf:false,combined:false,compared:false,simplified:false,path:'halves',cutThird:false,combinedThird:false});
 let labBoardEntry=null;
-let labNextId=1,labState={work:[{id:1,n:1,d:1}],a:[],b:[],sum:[]},labSelected=null,labHistory=[],labGesture=null,labFresh=[],labIgnoreClick=false,labMenuId=null,labLongPress=null,labMilestones=labInitialMilestones();
+let labNextId=1,labState={work:[{id:1,n:1,d:1}],a:[],b:[],sum:[]},labSelected=null,labHistory=[],labGesture=null,labFresh=[],labIgnoreClick=false,labMenuId=null,labLongPress=null,labBoardHold=null,labLastTouchTap=null,labTouchSimplifiedAt=0,labMilestones=labInitialMilestones();
 const labName=z=>({work:'cutting board',a:'comparison A',b:'comparison B',sum:'addition row'})[z];
 const labNew=(n,d,emphasis=null)=>({id:++labNextId,n,d,...(emphasis===null?{}:{emphasis})});
 const labLabel=p=>p.d===1?String(p.n):`${p.n}/${p.d}`;
@@ -420,7 +516,44 @@ const labMixed=({n,d})=>{if(!n)return '0';const g=gcd(n,d);n/=g;d/=g;
   if(n===d)return '1 whole';if(n%d===0)return `${n/d} wholes`;
   const whole=Math.floor(n/d);return whole?`${whole} ${n%d}/${d}`:`${n}/${d}`};
 const labSameShadow=`inset 0 3px 0 #ffffff5f,inset -2px 0 0 #081f332b,0 var(--lab-depth) 0 color-mix(in srgb,var(--piece-color) 45%,#183047),0 calc(var(--lab-depth) + 2px) 4px #193d5942`;
-function labOpenSolution(title, html){$('labSolutionTitle').textContent=title;$('labSolutionBody').innerHTML=html;$('labSolutionDialog').showModal()}
+function labTypesetSolutionFractions(container){
+  // Only replace visible text nodes; preserve all existing calculation steps,
+  // strong tags and accessible text rather than touching HTML attributes.
+  const matcher=/\b(\d+)\/(\d+)\b/g;
+  const walker=document.createTreeWalker(container,NodeFilter.SHOW_TEXT);
+  const nodes=[];
+  while(walker.nextNode()){
+    const node=walker.currentNode;
+    if(node.parentElement?.closest('.lab-vertical-fraction'))continue;
+    if(/\b\d+\/\d+\b/.test(node.nodeValue))nodes.push(node);
+  }
+  for(const node of nodes){
+    const value=node.nodeValue;
+    const fragment=document.createDocumentFragment();
+    let previous=0;
+    for(const match of value.matchAll(matcher)){
+      if(match.index>previous)fragment.appendChild(document.createTextNode(value.slice(previous,match.index)));
+      const fraction=document.createElement('span');
+      fraction.className='lab-vertical-fraction';
+      fraction.setAttribute('role','math');
+      fraction.setAttribute('aria-label',`${match[1]} over ${match[2]}`);
+      const top=document.createElement('span'),bottom=document.createElement('span');
+      top.className='lab-numerator';bottom.className='lab-denominator';
+      top.textContent=match[1];bottom.textContent=match[2];
+      top.setAttribute('aria-hidden','true');bottom.setAttribute('aria-hidden','true');
+      fraction.append(top,bottom);fragment.appendChild(fraction);
+      previous=match.index+match[0].length;
+    }
+    if(previous<value.length)fragment.appendChild(document.createTextNode(value.slice(previous)));
+    if(previous)node.replaceWith(fragment);
+  }
+}
+function labOpenSolution(title,html){
+  $('labSolutionTitle').textContent=title;
+  const content=$('labSolutionBody');content.innerHTML=html;
+  labTypesetSolutionFractions(content);
+  $('labSolutionDialog').showModal();
+}
 function labFlashEnteredPieces(ms=2300){
   const until=Date.now()+ms;
   let flashed=false;
@@ -464,7 +597,7 @@ function labFeedback(msg){$('labFeedback').textContent=msg}
 function labPieceHTML(p,scale=1,z='work',original=null){const [col,ink]=labColor(p.d),fresh=labFresh.includes(p.id);
 const deletable=z!=='work',canShowRemove=deletable&&p.n/p.d/scale>=.085;
 const fragmentNote=original&&labLabel(original)!==labLabel(p)?` (part of ${labLabel(original)}; moving it moves the entire block)`:'';
-return `<button type="button" class="lab-piece ${z==='work'&&p.emphasis===true&&Date.now()<(p.glowUntil||0)?'emphasized':z==='work'&&p.emphasis===false?'remainder':''} ${fresh?'pop':''}" style="--piece-width:${100*p.n/p.d/scale}%;--piece-color:${col};--piece-ink:${ink}" data-lab-id="${p.id}" data-d="${p.d}" aria-label="${labLabel(p)}${fragmentNote}. Drag to move, right-click for Cut, Simplify or Delete, or double-click to simplify." title="${labLabel(p)}${fragmentNote} — right-click to cut, simplify or delete"><span class="lab-fraction"><b>${p.n}</b><i>${p.d}</i></span>${p.n>1&&p.d>1&&p.emphasis!==true?'<span class="lab-join-indicator">joined</span>':''}${canShowRemove?`<span class="lab-remove-corner" data-lab-delete="${p.id}" title="Delete ${labLabel(p)} block" aria-hidden="true">×</span>`:''}</button>`;
+return `<button type="button" class="lab-piece ${z==='work'&&p.emphasis===true&&Date.now()<(p.glowUntil||0)?'emphasized':z==='work'&&p.emphasis===false?'remainder':''} ${fresh?'pop':''}" style="--piece-width:${100*p.n/p.d/scale}%;--piece-color:${col};--piece-ink:${ink}" data-lab-id="${p.id}" data-d="${p.d}" aria-label="${labLabel(p)}${fragmentNote}. Drag to move; right-click or touch and hold for options; double-click or double-tap to simplify." title="${labLabel(p)}${fragmentNote} — right-click or touch and hold for options"><span class="lab-fraction"><b>${p.n}</b><i>${p.d}</i></span>${p.n>1&&p.d>1&&p.emphasis!==true?'<span class="lab-join-indicator">joined</span>':''}${canShowRemove?`<span class="lab-remove-corner" data-lab-delete="${p.id}" title="Delete ${labLabel(p)} block" aria-hidden="true">×</span>`:''}</button>`;
 }
 function labBoardRows(){
   const rows=[];let row=[],used=0;
@@ -607,7 +740,7 @@ function labRender(){
     '➕ Drop pieces in the <strong>addition row</strong>. Every rounded bar is a separate whole; a new empty bar is ready for the next piece.',
     '🎉 Keep exploring! Try the fractions 1/3, 2/3 and 3/6 or restart to follow the half-and-quarter lesson.'
   ];
-  $('labInstruction').innerHTML=path==='thirds'?thirdInstructions[Math.min(stage,6)]:path==='halves'?instructions[Math.min(stage,5)]:freeInstructions[Math.min(stage,4)];
+  $('labInstruction').innerHTML=(path==='thirds'?thirdInstructions[Math.min(stage,6)]:path==='halves'?instructions[Math.min(stage,5)]:freeInstructions[Math.min(stage,4)]).replace(/right-click/gi,'right-click or touch and hold');
   document.querySelectorAll('#cutlab .lab-piece').forEach(el=>el.classList.toggle('chosen',Number(el.dataset.labId)===labSelected));
   labFresh=[];
 }
@@ -733,7 +866,7 @@ function labMergeAll(){
   labState.sum=[joined];labFresh=[joined.id];labSelected=null;labRender();
   labFeedback("The Addition pieces are grouped. Choose Show Answer for the complete solution.");
 }
-function labCloseMenu(){const menu=$('labContextMenu');menu.hidden=true;labMenuId=null}
+function labCloseMenu(){const menu=$('labContextMenu');menu.hidden=true;menu.classList.remove('lab-menu-await-release');labMenuId=null}
 function labOpenMenu(id,x,y){const f=id===null?null:labFind(id);if(id!==null&&!f)return;labMenuId=id;
   const menu=$('labContextMenu');$('labMenuLabel').textContent=f?`${labLabel(f.p)} — choose an action`:'Cutting board — choose an action';
   $('labCutChoices').innerHTML=f?labCutOptions.map(k=>`<button type="button" data-cut-count="${k}" role="menuitem" ${labCanCut(f,k)?'':'disabled'}>✂ Into ${k}</button>`).join(''):'';
@@ -816,7 +949,7 @@ $('labShowAnswer').addEventListener('click',labShowAnswer);
 $('labMergeAll').addEventListener('click',labMergeAll);
 labEl.querySelectorAll('[data-lab-clear]').forEach(button=>button.addEventListener('click',()=>labClearZone(button.dataset.labClear)));
 labEl.addEventListener('contextmenu',e=>{const el=e.target.closest('[data-lab-id]');if(el){e.preventDefault();labOpenMenu(Number(el.dataset.labId),e.clientX,e.clientY)}else if(e.target.closest('#labWork')){e.preventDefault();labOpenMenu(null,e.clientX,e.clientY)}});
-labEl.addEventListener('dblclick',e=>{const el=e.target.closest('[data-lab-id]');if(!el)return;e.preventDefault();labCloseMenu();labSimplify(Number(el.dataset.labId))});
+labEl.addEventListener('dblclick',e=>{const el=e.target.closest('[data-lab-id]');if(!el)return;e.preventDefault();if(Date.now()-labTouchSimplifiedAt<650)return;labCloseMenu();labSimplify(Number(el.dataset.labId))});
 labEl.addEventListener('click',e=>{
   if(e.target.closest('#labContextMenu'))return;
   const remove=e.target.closest('[data-lab-delete]');
@@ -832,7 +965,7 @@ document.addEventListener('keydown',e=>{
   if((e.key==='Delete'||e.key==='Backspace')&&labSelected!==null&&!e.target.closest('input,textarea,select,[contenteditable]')){e.preventDefault();labDeleteBlock(labSelected)}
 });
 $('labUndo').onclick=labUndo;
-$('labReset').onclick=()=>{labNextId=1;labState={work:[{id:1,n:1,d:1}],a:[],b:[],sum:[]};labHistory=[];labMilestones=labInitialMilestones();labBoardEntry=null;labSelected=null;labCloseMenu();labRender();labFeedback('Start with 1 whole. Right-click it and choose Cut into 2, 3, 4, 6 or 8.')};
+$('labReset').onclick=()=>{labNextId=1;labState={work:[{id:1,n:1,d:1}],a:[],b:[],sum:[]};labHistory=[];labMilestones=labInitialMilestones();labBoardEntry=null;labSelected=null;labCloseMenu();labRender();labFeedback('Start with 1 whole. Right-click or touch and hold it to cut into 2, 3, 4, 6, or 8 parts.')};
 $('labExample').onclick=()=>{labSnapshot();labState={work:[labNew(1,2),labNew(1,4),labNew(1,4)],a:[labNew(1,2)],b:[labNew(2,4)],sum:[]};labMilestones={...labInitialMilestones(),cutWhole:true,cutHalf:true,combined:true,compared:true};labBoardEntry=null;labSelected=null;labRender();labFeedback('Example loaded. Compare the two bars or choose Show Comparison Solution.')};
 $('labThirdsExample').onclick=()=>{labSnapshot();labState={work:[labNew(1,2),labNew(1,6),labNew(1,6),labNew(1,6)],a:[labNew(1,2)],b:[labNew(3,6)],sum:[]};labMilestones={...labInitialMilestones(),cutWhole:true,cutHalf:true,combined:true,compared:true};labBoardEntry=null;labSelected=null;labRender();labFeedback('Example loaded. Compare the two bars or choose Show Comparison Solution.')};
 function labHoverTarget(x,y,sourceId){const at=document.elementFromPoint(x,y);const el=at&&at.closest('[data-lab-id]');
@@ -842,20 +975,47 @@ function labHoverTarget(x,y,sourceId){const at=document.elementFromPoint(x,y);co
 }
 function labUnhighlight(){labEl.querySelectorAll('.lab-piece.drop-target').forEach(el=>el.classList.remove('drop-target'));labAreas.forEach(z=>$(labIds[z]).classList.remove('over'))}
 function labCancelLongPress(){if(labLongPress){clearTimeout(labLongPress);labLongPress=null}}
+function labCancelBoardHold(){if(labBoardHold){clearTimeout(labBoardHold.timer);labBoardHold=null}}
+function labSuppressPostTouchClick(){labIgnoreClick=true;window.setTimeout(()=>{labIgnoreClick=false},450)}
 labEl.addEventListener('pointerdown',e=>{
   if(e.pointerType==='mouse'&&e.button!==0)return;
-  if(e.target.closest('[data-lab-delete]'))return;
-  const el=e.target.closest('[data-lab-id]');if(!el||e.target.closest('#labContextMenu'))return;
-  const f=labFind(Number(el.dataset.labId));if(!f)return;
-  labCloseMenu();labGesture={id:f.p.id,from:f.z,pointer:e.pointerId,x:e.clientX,y:e.clientY,active:false,hold:false,ghost:null,piece:f.p,el};
-  if(e.pointerType==='touch'){
-    labCancelLongPress();
-    const gesture=labGesture;
-    labLongPress=setTimeout(()=>{if(labGesture===gesture&&!gesture.active){gesture.hold=true;labOpenMenu(gesture.id,gesture.x,gesture.y);labIgnoreClick=true;setTimeout(()=>labIgnoreClick=false,350)}},580);
+  if(e.target.closest('[data-lab-delete],#labContextMenu'))return;
+  const el=e.target.closest('[data-lab-id]');
+  if(!el){
+    // An empty cutting-board row still offers Enter fraction on tablets.
+    if(e.pointerType==='touch'&&e.isPrimary!==false&&e.target.closest('#labWork')){
+      labCancelBoardHold();labCloseMenu();
+      const hold={pointer:e.pointerId,x:e.clientX,y:e.clientY,timer:null};
+      hold.timer=window.setTimeout(()=>{
+        if(labBoardHold!==hold)return;
+        labBoardHold=null;
+        labOpenMenu(null,hold.x,hold.y);
+        $('labContextMenu').classList.add('lab-menu-await-release');
+        labSuppressPostTouchClick();
+      },620);
+      labBoardHold=hold;
+    }
+    return;
   }
-  el.setPointerCapture(e.pointerId);
+  const f=labFind(Number(el.dataset.labId));if(!f)return;
+  labCancelLongPress();labCancelBoardHold();labCloseMenu();
+  labGesture={id:f.p.id,from:f.z,pointer:e.pointerId,x:e.clientX,y:e.clientY,active:false,hold:false,ghost:null,piece:f.p,el,pointerType:e.pointerType};
+  if(e.pointerType==='touch'){
+    const gesture=labGesture;
+    labLongPress=window.setTimeout(()=>{
+      if(labGesture!==gesture||gesture.active)return;
+      gesture.hold=true;
+      // Release capture so the menu itself immediately receives taps.
+      try{if(el.hasPointerCapture(e.pointerId))el.releasePointerCapture(e.pointerId)}catch(_err){}
+      labOpenMenu(gesture.id,gesture.x,gesture.y);
+      $('labContextMenu').classList.add('lab-menu-await-release');
+      labSuppressPostTouchClick();
+    },620);
+  }
+  try{el.setPointerCapture(e.pointerId)}catch(_err){}
 });
 document.addEventListener('pointermove',e=>{
+  if(labBoardHold&&e.pointerId===labBoardHold.pointer&&Math.hypot(e.clientX-labBoardHold.x,e.clientY-labBoardHold.y)>10)labCancelBoardHold();
   const g=labGesture;if(!g||e.pointerId!==g.pointer||g.hold)return;
   const dist=Math.hypot(e.clientX-g.x,e.clientY-g.y);
   if(dist>10)labCancelLongPress();
@@ -866,17 +1026,35 @@ document.addEventListener('pointermove',e=>{
   if(target.piece){labEl.querySelector(`[data-lab-id="${target.piece}"]`)?.classList.add('drop-target')}
   else if(target.zone&&target.zone!==g.from)$(labIds[target.zone]).classList.add('over');
 });
-function labEndDrag(e){const g=labGesture;if(!g||e.pointerId!==g.pointer)return;
+function labEndDrag(e){
+  if(labBoardHold?.pointer===e.pointerId)labCancelBoardHold();
+  const g=labGesture;if(!g||e.pointerId!==g.pointer)return;
   labGesture=null;labCancelLongPress();if(g.ghost)g.ghost.remove();labUnhighlight();
-  if(g.hold){labIgnoreClick=true;setTimeout(()=>labIgnoreClick=false,350);return}
-  if(g.active){const target=labHoverTarget(e.clientX,e.clientY,g.id);
+  if(g.hold){labSuppressPostTouchClick();return}
+  if(g.active){
+    const target=labHoverTarget(e.clientX,e.clientY,g.id);
     if(target.piece)labCombine(g.id,target.piece);
     else if(target.zone&&target.zone!==g.from)labMove(g.id,target.zone);
-    labIgnoreClick=true;setTimeout(()=>labIgnoreClick=false,260);
+    labLastTouchTap=null;
+    labSuppressPostTouchClick();
+  }else if(g.pointerType==='touch'&&e.type==='pointerup'){
+    // Mobile browsers do not consistently synthesize dblclick. Two taps
+    // on the same piece invoke the existing worked Simplify solution.
+    const now=Date.now(),prior=labLastTouchTap;
+    if(prior&&prior.id===g.id&&now-prior.time<430&&Math.hypot(e.clientX-prior.x,e.clientY-prior.y)<28){
+      labLastTouchTap=null;labTouchSimplifiedAt=now;labSuppressPostTouchClick();
+      labSelected=null;labCloseMenu();labSimplify(g.id);
+    }else labLastTouchTap={id:g.id,time:now,x:e.clientX,y:e.clientY};
   }
 }
 document.addEventListener('pointerup',labEndDrag);
 document.addEventListener('pointercancel',labEndDrag);
+for(const eventName of ['pointerup','pointercancel'])document.addEventListener(eventName,e=>{
+  if(e.pointerType!=='touch')return;
+  // Browsers synthesize a click after touchend; defer activation until that passes.
+  window.setTimeout(()=>$('labContextMenu').classList.remove('lab-menu-await-release'),180);
+});
+window.addEventListener('blur',()=>{labCancelBoardHold();labCancelLongPress()});
 window.addEventListener('resize',()=>requestAnimationFrame(labCompareGuides));
 labRender();
 
